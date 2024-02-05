@@ -1,0 +1,12 @@
+<launch>
+  <arg name="agent" default="trgppo"/>
+  <arg name="run_type" default="train"/>
+  <arg name="load_ep" default=""/>
+  <arg name="max_ep" default=""/>
+
+  <arg name="env_id" default="0"/>
+
+  <node pkg="project" type="run_turtlebot_env.py" name="$(arg run_type)" output="screen" args="$(arg run_type) $(arg agent) $(arg env_id) $(arg max_ep) $(arg load_ep)"/>
+  <node pkg="project"  type="moving_obst_agent.py" name="moving_obstacle" output="screen" />
+  <node pkg="project" type="result_graph_Autonav_RL_Gym_reward" name="result_graph_Autonav_RL_Gym_reward" args="$(arg run_type) $(arg agent) $(arg env_id) $(arg load_ep) $(arg max_ep)" output="screen" />
+</launch>

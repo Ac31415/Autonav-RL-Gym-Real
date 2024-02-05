@@ -5,31 +5,47 @@ import random
 import time
 import os
 import math
-from gazebo_msgs.srv import SpawnModel
+from gazebo_msgs.srv import SpawnModel, DeleteModel
 from gazebo_msgs.msg import ModelStates
 from std_msgs.msg import String
 from geometry_msgs.msg import Pose
 from std_srvs.srv import Empty
 from gazebo_msgs.srv import SetModelState
 from gazebo_msgs.msg import ModelState
-from training_respawn_coords import *
+
+import sys
+
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+
+from src.env.training_respawn_coords import *
+
+# from training_respawn_coords import *
 from tf.transformations import quaternion_from_euler
 
 
 class Respawn():
     def __init__(self, module_index=-1):
 
-        # Tracking current module being trained in
-        self.modules = [
-            module_empty(),
-            module_move_away(),
-            module_left_right(),
-            module_round_obstacle(),
-            module_static_obstacles(),
-            module_moving_obstacles(),
-            module_gate()
-            ]
-        self.module_index = module_index
+        if module_index == 'sim-to-real':
+            # Tracking current module being trained in
+            self.modules = [
+                module_sim_to_real()
+                ]
+            self.module_index = 0
+        else:
+            # Tracking current module being trained in
+            self.modules = [
+                module_empty(),
+                module_move_away(),
+                module_left_right(),
+                module_round_obstacle(),
+                module_static_obstacles(),
+                module_moving_obstacles(),
+                module_gate()
+                ]
+            self.module_index = module_index
+
+
         self.pub_module = rospy.Publisher('current_module', String, queue_size = 1)
 
         # Get goal box model
@@ -39,15 +55,27 @@ class Respawn():
         self.f = open(self.modelPath, 'r')
         self.model = self.f.read()
 
+        # # Create initial goal pose
+        # self.goal_position = Pose()
+        # self.goal_position.position.x, self.goal_position.position.y = self.modules[0].genGoalPos()
+        # self.goal_position.position.z = 0.0
+        # self.goal_model_name = 'goal'
+        #
+        # # Create initial bot pose
+        # self.bot_position = Pose()
+        # self.bot_position.position.x, self.bot_position.position.y = self.modules[0].genBotPos()
+        # self.bot_position.position.z = 0.0
+        # self.bot_model_name = 'turtlebot3_burger'
+
         # Create initial goal pose
         self.goal_position = Pose()
-        self.goal_position.position.x, self.goal_position.position.y = self.modules[0].genGoalPos()
+        self.goal_position.position.x, self.goal_position.position.y = self.modules[self.module_index].genGoalPos()
         self.goal_position.position.z = 0.0
         self.goal_model_name = 'goal'
 
         # Create initial bot pose
         self.bot_position = Pose()
-        self.bot_position.position.x, self.bot_position.position.y = self.modules[0].genBotPos()
+        self.bot_position.position.x, self.bot_position.position.y = self.modules[self.module_index].genBotPos()
         self.bot_position.position.z = 0.0
         self.bot_model_name = 'turtlebot3_burger'
 
@@ -79,12 +107,38 @@ class Respawn():
             else:
                 pass
 
+    def deleteModel(self):
+        while True:
+            if self.check_model:
+                rospy.wait_for_service('gazebo/delete_model')
+                del_model_prox = rospy.ServiceProxy('gazebo/delete_model', DeleteModel)
+                del_model_prox(self.goal_model_name)
+                break
+            else:
+                pass
+
+    # # Reposition goal and bot in new positions in next module
+    # def moduleRespawns(self, next_env=False):
+    #     if next_env:
+    #         self.nextModule()
+    #     self.repositionBot()
+    #     return self.repositionGoal()
+
+    # # Reposition goal and bot in new positions in next module
+    # def moduleRespawns(self, next_env=False):
+    #     if next_env:
+    #         self.nextModule()
+    #     return self.repositionGoal(), self.repositionBot()
+
     # Reposition goal and bot in new positions in next module
     def moduleRespawns(self, next_env=False):
-	if next_env:
-        	self.nextModule()
-        self.repositionBot()
-        return self.repositionGoal()
+        if next_env:
+            self.nextModule()
+
+        goal_x, goal_y = self.repositionGoal()
+        bot_x, bot_y = self.repositionBot()
+
+        return goal_x, goal_y, bot_x, bot_y
 
 
     # Move the goal to its new position
@@ -92,18 +146,24 @@ class Respawn():
 
         self.goal_position.position.x, self.goal_position.position.y = self.modules[self.module_index].genGoalPos()
 
-    	state_msg = ModelState()
-    	state_msg.model_name = "goal"
-    	state_msg.pose = self.goal_position
-    	rospy.wait_for_service('/gazebo/set_model_state')
+        print("Goal position: " + str(self.module_index))
 
-    	try:
+        state_msg = ModelState()
+        state_msg.model_name = "goal"
+        state_msg.pose = self.goal_position
+        rospy.wait_for_service('/gazebo/set_model_state')
+
+        try:
         	resp = self.pub_model.publish(state_msg)
         	print(resp)
-    	except rospy.ServiceException, e:
-        	print "Reposition goal: Service call failed: %s" % e
+        except rospy.ServiceException as e:
+            print("Reposition goal: Service call failed: %s" % e)
 
-    	rospy.wait_for_service('/gazebo/set_model_state')
+        rospy.wait_for_service('/gazebo/set_model_state')
+
+        # time.sleep(0.5)
+        # self.respawnGoal()
+        # self.deleteModel()
 
         print("Goal repositioned")
 
@@ -122,21 +182,23 @@ class Respawn():
     def repositionBot(self):
         self.bot_position.position.x, self.bot_position.position.y = self.modules[self.module_index].genBotPos()
 
-    	state_msg = ModelState()
-    	state_msg.model_name = self.bot_model_name
-    	state_msg.pose = self.bot_position
+        print("Bot position: " + str(self.module_index))
+
+        state_msg = ModelState()
+        state_msg.model_name = self.bot_model_name
+        state_msg.pose = self.bot_position
         quart = quaternion_from_euler(0,0,random.uniform(-3.1416,3.1416))
         state_msg.pose.orientation.z = quart[2]
         state_msg.pose.orientation.w = quart[3]
-    	rospy.wait_for_service('/gazebo/set_model_state')
+        rospy.wait_for_service('/gazebo/set_model_state')
 
-    	try:
-        	resp = self.pub_model.publish(state_msg)
-        	print(resp)
-    	except rospy.ServiceException, e:
-        	print "Reposition bot: Service call failed: %s" % e
+        try:
+            resp = self.pub_model.publish(state_msg)
+            print(resp)
+        except rospy.ServiceException as e:
+            print("Reposition bot: Service call failed: %s" % e)
 
-    	rospy.wait_for_service('/gazebo/set_model_state')
+        rospy.wait_for_service('/gazebo/set_model_state')
 
         print("Bot repositioned")
 
@@ -144,3 +206,8 @@ class Respawn():
 
     def currentModuleName(self):
         return self.modules[self.module_index].name
+
+
+
+    def currentModuleIndex(self):
+        return self.module_index

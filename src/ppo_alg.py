@@ -27,8 +27,11 @@ betas = (0.9, 0.999)
 random_seed = None
 
 # state params
-state_dim = 28
+# state_dim = 28
+# state_dim = 364
+state_dim = 366
 action_dim = 4
+# action_dim = 7
 ACTION_V_MIN = 0  # m/s
 ACTION_V_MAX = 0.4  # m/s
 
@@ -47,7 +50,11 @@ class PPO_agent:
                 )
 
         if (load_ep > 0):
-            self.ppo.load_models(load_ep)
+            # self.ppo.load_models(load_ep)
+
+            print(load_ep)
+
+            self.ppo.load_models_latest(load_ep)
 
 
     # called every step
@@ -55,7 +62,9 @@ class PPO_agent:
 
         self.time_step += 1
         action = self.ppo.select_action(state, self.memory)
+        # print("action: ", action)
         state, reward, collision, goal = self.env.step(action, self.past_action)
+        # print("state: ", state)
 
         self.past_action = action
         self.memory.rewards.append(reward)
@@ -69,4 +78,6 @@ class PPO_agent:
         return state, reward, collision, goal
 
     def save(self, ep):
-        self.ppo.save_models(ep)
+        # self.ppo.save_models(ep)
+
+        self.ppo.save_models_latest(ep)

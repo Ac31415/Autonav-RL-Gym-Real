@@ -13,13 +13,28 @@ from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import Odometry
 from std_srvs.srv import Empty
 from tf.transformations import euler_from_quaternion
-from testing_respawn import Respawn
+
+import sys
+
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+
+from src.env.testing_respawn import Respawn
+
+# from testing_respawn import Respawn
 from math import e
 
 
+from std_msgs.msg import Float32MultiArray
+
+
+
 class Env():
-    def __init__(self, agent_type):
+    def __init__(self, agent_type, env_module_id=None):
         self.agent_type = agent_type
+
+        self.env_module_id = env_module_id  # if is none. then will randomly change between modules.
+        self.run_type = sys.argv[1]
+
         self.envs_list = {}
         self.record_goals = 0
         self.sequential_goals = 0
@@ -31,6 +46,9 @@ class Env():
         self.position = Pose()
         self.pub_cmd_vel_l = rospy.Publisher('cmd_vel_l', Twist, queue_size=5)
         self.pub_cmd_vel_r = rospy.Publisher('cmd_vel_r', Twist, queue_size=5)
+
+        self.pub_cmd_vel = rospy.Publisher('cmd_vel', Twist, queue_size=5)
+
         self.sub_odom = rospy.Subscriber('odom', Odometry, self.getOdometry)
         self.reset_proxy = rospy.ServiceProxy('gazebo/reset_simulation', Empty)
         self.unpause_proxy = rospy.ServiceProxy('gazebo/unpause_physics', Empty)
@@ -41,6 +59,15 @@ class Env():
         self.log_file = ""
         self.goal_hit = 0
         self.step_no = 1
+
+        self.pub_result = rospy.Publisher('result', Float32MultiArray, queue_size=5)
+        self.result = Float32MultiArray()
+
+        self.goals = []
+        self.GoalRates = []
+        self.sum_of_goals = sum(self.goals)
+
+        self.number_of_goals = 0
 
         self.createLog()
 
@@ -108,6 +135,31 @@ class Env():
         #print("Heading = " + str(heading))
         return scan_range + [heading, current_distance], done
 
+    def getStateDQN(self, scan):
+        scan_range = []
+        heading = self.heading
+        min_range = 0.13
+        done = False
+
+        for i in range(len(scan.ranges)):
+            if scan.ranges[i] == float('Inf'):
+                scan_range.append(3.5)
+            elif np.isnan(scan.ranges[i]):
+                scan_range.append(0)
+            else:
+                scan_range.append(scan.ranges[i])
+
+        obstacle_min_range = round(min(scan_range), 2)
+        obstacle_angle = np.argmin(scan_range)
+        if min_range > min(scan_range) > 0:
+            done = True
+
+        current_distance = round(math.hypot(self.goal_x - self.position.x, self.goal_y - self.position.y), 2)
+        if current_distance < 0.2:
+            self.get_goalbox = True
+
+        return scan_range + [heading, current_distance, obstacle_min_range, obstacle_angle], done
+
     def setReward(self, state, done):
         current_distance = state[-1]
         heading = state[-2]
@@ -117,10 +169,10 @@ class Env():
 
     	#print("new past  d = " + str(self.past_distance))
     	#print("new curr  d = " + str(current_distance))
-    	distance_rate = (abs(self.past_distance) - abs(current_distance))
+        distance_rate = (abs(self.past_distance) - abs(current_distance))
 
-    	if(distance_rate > 0.5):
-    		distance_rate = -1
+        if(distance_rate > 0.5):
+            distance_rate = -1
     	#print(distance_rate)
         if distance_rate > 0:
             reward = 200.*distance_rate
@@ -128,7 +180,7 @@ class Env():
             reward = -5.
 
            # reward = 100/(1 + current_distance)
-    	self.past_distance = current_distance
+        self.past_distance = current_distance
         if done:
             rospy.loginfo("Collision!!")
             rospy.loginfo("record = " + str(self.record_goals))
@@ -138,6 +190,11 @@ class Env():
             reward = -1000.
             self.pub_cmd_vel_l.publish(Twist())
             self.pub_cmd_vel_r.publish(Twist())
+
+            self.goals.append(0)
+            self.sum_of_goals = sum(self.goals)
+            goal_rate = self.sum_of_goals / len(self.goals)
+            self.GoalRates.append(goal_rate)
 
         if self.get_goalbox:
             self.sequential_goals += 1
@@ -149,6 +206,13 @@ class Env():
             reward = 1000.
             self.pub_cmd_vel_l.publish(Twist())
             self.pub_cmd_vel_r.publish(Twist())
+
+            self.goals.append(1)
+            self.sum_of_goals = sum(self.goals)
+            goal_rate = self.sum_of_goals / len(self.goals)
+            self.GoalRates.append(goal_rate)
+
+            self.number_of_goals += 1
             #self.goal_x, self.goal_y = self.respawn_goal.moduleRespawns()
             #self.goal_distance = self.getGoalDistace()
             #self.get_goalbox = False
@@ -182,11 +246,49 @@ class Env():
         state, done = self.getState(data, past_action)
         reward = self.setReward(state, done)
         self.goal_hit = 0
-    	if self.get_goalbox:
-    		self.goal_hit = 1
-    		self.get_goalbox = False
+        if self.get_goalbox:
+            self.goal_hit = 1
+            self.get_goalbox = False
 
         return np.asarray(state), reward, done, self.goal_hit
+
+    def stepDQN(self, action):
+        self.step_no += 1
+
+
+        action_size = 5
+        max_angular_vel = 1.5
+        ang_vel = ((action_size - 1)/2 - action) * max_angular_vel * 0.5
+
+        vel_cmd = Twist()
+        vel_cmd.linear.x = 0.15
+        vel_cmd.angular.z = ang_vel
+        self.pub_cmd_vel.publish(vel_cmd)
+
+        data = None
+        while data is None:
+            try:
+                data = rospy.wait_for_message('scan', LaserScan, timeout=5)
+            except:
+                pass
+
+
+
+
+        state, done = self.getStateDQN(data)
+        reward = self.setReward(state, done)
+
+
+        goal = False
+        if self.get_goalbox:
+            done = True
+            self.get_goalbox = False
+            goal = True
+
+        # print("state: " + str(state))
+        # print("state as array: " + str(np.asarray(state)))
+
+        return np.asarray(state), reward, done, goal
 
     def reset(self):
         rospy.wait_for_service('gazebo/reset_simulation')
@@ -211,7 +313,7 @@ class Env():
         else:
             self.goal_x, self.goal_y = self.respawn_goal.moduleRespawns(self.step_no >= 500 or self.goal_hit)
 
-    	if(self.step_no >= 500):
+        if(self.step_no >= 500):
             self.step_no = 1
         self.goal_distance = self.getGoalDistace()
         state, done = self.getState(data, [0.,0.])
@@ -238,13 +340,62 @@ class Env():
 
 
 
+    def DispEpisodeCSV(self, reward, collision_count, goal_count, step_count, GoalRates, num_goals):
+        self.ep_number = self.ep_number + 1
+        log = {
+            "ep_number": self.ep_number,
+            "environment": self.respawn_goal.currentModuleName(),
+            "reward_for_ep": reward,
+            "steps": step_count,
+            "collision_count": collision_count,
+            "goal_count": goal_count
+        }
+
+        # if len(GoalRates) == 0:
+        #     self.result.data = [reward, self.respawn_goal.currentModuleIndex(), self.current_time, float("%.4f" % 0), num_goals]
+        # else:
+        #     self.result.data = [reward, self.respawn_goal.currentModuleIndex(), self.current_time, float("%.4f" % GoalRates[-1]), num_goals]
+
+        if len(GoalRates) == 0:
+            self.result.data = [reward, self.current_time, float("%.4f" % 0), num_goals]
+        else:
+            self.result.data = [reward, self.current_time, float("%.4f" % GoalRates[-1]), num_goals]
+
+
+        self.pub_result.publish(self.result)
+
+
+
+    # def createLog(self):
+    #     logpath = os.path.dirname(os.path.realpath(__file__)) + "/testing_logs"
+    #     self.log_file = logpath + "/" + self.agent_type + "-" + str(int(time.time())) + ".txt"
+    #
+    #
+    #     try:
+    #         os.mkdir(logpath)
+    #     except:
+    #         pass
+    #
+    #     logfile = open(self.log_file, "a")
+    #     logfile.close
+
+
+
     def createLog(self):
-        logpath = os.path.dirname(os.path.realpath(__file__)) + "/testing_logs"
-        self.log_file = logpath + "/" + self.agent_type + "-" + str(int(time.time())) + ".txt"
+
+        # dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/env/{}ing_logs/{}/env-{}'.format(sys.argv[1], self.agent_type, self.env_module_id)
+
+        dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/env/{}ing_logs/{}/'.format(sys.argv[1], self.agent_type)
+
+        logpath = os.path.dirname(os.path.realpath(__file__)) + dirPath
+
+        self.current_time = int(time.time())
+
+        self.log_file = logpath + "/" + self.agent_type + "-" + str(self.current_time) + ".txt"
 
 
         try:
-            os.mkdir(logpath)
+            os.makedirs(logpath)
         except:
             pass
 

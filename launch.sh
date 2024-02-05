@@ -4,6 +4,6 @@
 #$2 agent type (ddpg, ppo, nav (for turtlebot3 navigation package)
 #$3 load ep (optional)
 
-gnome-terminal -e "./launch/launch_env.sh $1 $2"
+gnome-terminal -e "./launch/launch_env.sh $1 $2 $3 $4 $5 $6"
 sleep 4
-gnome-terminal -e "./launch/launch_agent.sh $1 $2 $3"
+gnome-terminal -e "./launch/launch_agent.sh $1 $2 $3 $4 $5 $6"

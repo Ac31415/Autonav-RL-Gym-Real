@@ -13,14 +13,29 @@ from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import Odometry
 from std_srvs.srv import Empty
 from tf.transformations import euler_from_quaternion
-from training_respawn import Respawn
+
+import sys
+
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+
+from src.env.training_respawn import Respawn
+
+# from training_respawn import Respawn
 from math import e
+
+
+
+
+from std_msgs.msg import Float32MultiArray
+
 
 
 class Env():
     def __init__(self, agent_type, env_module_id=None):
         self.agent_type = agent_type
         self.env_module_id = env_module_id  # if is none. then will randomly change between modules.
+
+        self.run_type = sys.argv[1]
 
         self.envs_list = {}
         self.record_goals = 0
@@ -33,6 +48,9 @@ class Env():
         self.position = Pose()
         self.pub_cmd_vel_l = rospy.Publisher('cmd_vel_l', Twist, queue_size=5)
         self.pub_cmd_vel_r = rospy.Publisher('cmd_vel_r', Twist, queue_size=5)
+
+        self.pub_cmd_vel = rospy.Publisher('cmd_vel', Twist, queue_size=5)
+
         self.sub_odom = rospy.Subscriber('odom', Odometry, self.getOdometry)
         self.reset_proxy = rospy.ServiceProxy('gazebo/reset_simulation', Empty)
         self.unpause_proxy = rospy.ServiceProxy(
@@ -40,9 +58,19 @@ class Env():
         self.pause_proxy = rospy.ServiceProxy('gazebo/pause_physics', Empty)
         self.respawn_goal = Respawn(-1 if env_module_id is None else env_module_id)
         self.past_distance = 0.
+        self.past_obstacle_distance = 0.
         self.ep_number = 0
         self.log_file = ""
         self.step_no = 1
+
+        self.pub_result = rospy.Publisher('result', Float32MultiArray, queue_size=5)
+        self.result = Float32MultiArray()
+
+        self.goals = []
+        self.GoalRates = []
+        self.sum_of_goals = sum(self.goals)
+
+        self.number_of_goals = 0
 
         self.createLog()
 
@@ -88,9 +116,10 @@ class Env():
     def getState(self, scan, past_action):
         scan_range = []
         heading = self.heading
-        min_range = 0.16
+        # min_range = 0.16
+        min_range = 0.13
         done = False
-        print(scan)
+        # print(scan)
 
         for i in range(len(scan.ranges)):
             if scan.ranges[i] == float('Inf'):
@@ -101,6 +130,23 @@ class Env():
                 scan_range.append(scan.ranges[i])
 	    # print(scan_range[i])
 
+
+        # scan_range_filtered = []
+        #
+        # for item in scan_range:
+        #     if item != 0:
+        #         scan_range_filtered.append(item)
+
+
+        # obstacle_min_range = round(min(scan_range_filtered), 2)
+        # obstacle_angle = np.argmin(scan_range_filtered)
+        obstacle_min_range = round(min(scan_range), 2)
+        obstacle_angle = np.argmin(scan_range)
+
+
+        # if min_range > min(scan_range_filtered) > 0:
+        #     done = 1
+
         if min_range > min(scan_range) > 0:
             done = True
 
@@ -109,14 +155,57 @@ class Env():
 
         current_distance = round(math.hypot(
             self.goal_x - self.position.x, self.goal_y - self.position.y), 2)
+
+        # print("Current distance to goal = " + str(current_distance))
+        #
+        # print("goal pos = " + "x: " + str(self.goal_x) + " y: " + str(self.goal_y))
+        # print("robot pos = " + "x: " + str(self.position.x) + " y: " + str(self.position.y))
+
         if current_distance < 0.2:
             self.get_goalbox = True
             # print("Heading = " + str(heading))
-        return scan_range + [heading, current_distance], done
+
+        # if current_distance < 0.1:
+        #     self.get_goalbox = True
+        #     # print("Heading = " + str(heading))
+        # return scan_range + [heading, current_distance], done
+        # print("obstacle distance = " + str(obstacle_min_range))
+        # print("obstacle heading = " + str(obstacle_angle))
+        return scan_range + [heading, current_distance, obstacle_min_range, obstacle_angle], done
+
+    # check scan_range size and see if adding x y position of agent into the state would change things
+    def getStateDQN(self, scan):
+        scan_range = []
+        heading = self.heading
+        min_range = 0.13
+        done = False
+
+        for i in range(len(scan.ranges)):
+            if scan.ranges[i] == float('Inf'):
+                scan_range.append(3.5)
+            elif np.isnan(scan.ranges[i]):
+                scan_range.append(0)
+            else:
+                scan_range.append(scan.ranges[i])
+
+        obstacle_min_range = round(min(scan_range), 2)
+        obstacle_angle = np.argmin(scan_range)
+        if min_range > min(scan_range) > 0:
+            done = True
+
+        current_distance = round(math.hypot(self.goal_x - self.position.x, self.goal_y - self.position.y), 2)
+        if current_distance < 0.2:
+            self.get_goalbox = True
+
+        return scan_range + [heading, current_distance, obstacle_min_range, obstacle_angle], done
 
     def setReward(self, state, done):
-        current_distance = state[-1]
-        heading = state[-2]
+        current_distance = state[-3]
+        heading = state[-4]
+        obstacle_distance = state[-2]
+        obstacle_heading = state[-1]
+        # current_distance = state[-1]
+        # heading = state[-2]
         # print("dist = " + str(current_distance))
         # print("heading = " + str(heading))
         # print("dist = " + str(current_distance))
@@ -129,12 +218,65 @@ class Env():
             distance_rate = -1
     	# print(distance_rate)
         if distance_rate > 0:
-            reward = 200.*distance_rate
+            reward = 200.*distance_rate*(1 - 4 * math.fabs(0.5 - math.modf(0.5 * (heading + math.pi) % (2 * math.pi) / math.pi)[0]))
+            # reward = 400.*distance_rate*(1 - 4 * math.fabs(0.5 - math.modf(0.25 + 0.5 * heading % (2 * math.pi) / math.pi)[0]))
+            # reward = 200.*distance_rate*np.sin(heading)
         if distance_rate <= 0:
-            reward = -5.
+            reward = -10.
+
+        # # print("new past  d = " + str(self.past_distance))
+        # # print("new curr  d = " + str(current_distance))
+        # distance_rate = (abs(self.past_distance) - abs(current_distance))
+        #
+        # # if (distance_rate > 0.5):
+        # #     distance_rate = -1
+    	# # # print(distance_rate)
+        # if distance_rate > 0:
+        #     reward = 200.*distance_rate
+        #     # reward = 200.*distance_rate*np.sin(heading)
+        # if distance_rate <= 0:
+        #     reward = -5.
+
+        obstacle_distance_rate = (abs(self.past_obstacle_distance) - abs(obstacle_distance))
+
+        if (obstacle_distance_rate > 0.5):
+            obstacle_distance_rate = 1
+    	# print(distance_rate)
+        if obstacle_distance_rate > 0:
+            reward = reward - 400.*obstacle_distance_rate*(1 - 4 * math.fabs(0.5 - math.modf(0.5 * (obstacle_heading + math.pi) % (2 * math.pi) / math.pi)[0]))
+            # reward = reward - 10.*np.sin(obstacle_heading)
+        if obstacle_distance_rate <= 0:
+            reward = reward + 5.
+
+        # obstacle_distance_rate = (abs(self.past_obstacle_distance) - abs(obstacle_distance))
+        #
+        # if (obstacle_distance_rate > 0.5):
+        #     obstacle_distance_rate = 1
+    	# # print(distance_rate)
+        # if obstacle_distance_rate > 0:
+        #     reward = reward - 5.*(1 - 4 * math.fabs(0.5 - math.modf(0.5 * (obstacle_heading + math.pi) % (2 * math.pi) / math.pi)[0]))
+        #     # reward = reward - 10.*np.sin(obstacle_heading)
+        # if obstacle_distance_rate <= 0:
+        #     reward = reward + 200.*obstacle_distance_rate
+
+        # obstacle_distance_rate = (abs(self.past_obstacle_distance) - abs(obstacle_distance))
+        #
+        # if (obstacle_distance_rate > 0.5):
+        #     obstacle_distance_rate = 1
+    	# # print(distance_rate)
+        # if obstacle_distance_rate > 0:
+        #     reward = -5.*(1 - 4 * math.fabs(0.5 - math.modf(0.5 * (obstacle_heading + math.pi) % (2 * math.pi) / math.pi)[0]))
+        #     # reward = reward - 10.*np.sin(obstacle_heading)
+        # if obstacle_distance_rate <= 0:
+        #     reward = 200.*obstacle_distance_rate
+
+        print("reward = " + str(reward))
+        # print("distance_rate = " + str(distance_rate))
+        # print("obstacle_distance_rate = " + str(obstacle_distance_rate))
 
         # reward = 100/(1 + current_distance)
         self.past_distance = current_distance
+        self.past_obstacle_distance = obstacle_distance
         if done:
             rospy.loginfo("Collision!!")
             rospy.loginfo("record = " + str(self.record_goals))
@@ -144,6 +286,17 @@ class Env():
             reward = -1000.
             self.pub_cmd_vel_l.publish(Twist())
             self.pub_cmd_vel_r.publish(Twist())
+
+            # self.respawn_goal.deleteModel()
+            # time.sleep(0.5)
+            # self.respawn_goal.respawnGoal()
+
+            # self.respawn_goal.deleteModel()
+
+            self.goals.append(0)
+            self.sum_of_goals = sum(self.goals)
+            goal_rate = self.sum_of_goals / len(self.goals)
+            self.GoalRates.append(goal_rate)
 
         if self.get_goalbox:
             self.sequential_goals += 1
@@ -155,17 +308,101 @@ class Env():
             reward = 1000.
             self.pub_cmd_vel_l.publish(Twist())
             self.pub_cmd_vel_r.publish(Twist())
+
+            # self.respawn_goal.deleteModel()
+            # time.sleep(0.5)
+            # self.respawn_goal.respawnGoal()
+
+            # self.goal_x, self.goal_y = self.respawn_goal.moduleRespawns(self.env_module_id is None)
+
             # self.goal_x, self.goal_y = self.respawn_goal.moduleRespawns()
             # self.goal_distance = self.getGoalDistace()
             # self.get_goalbox = False
             # print("Reward = " + str(reward))
 
+            self.goals.append(1)
+            self.sum_of_goals = sum(self.goals)
+            goal_rate = self.sum_of_goals / len(self.goals)
+            self.GoalRates.append(goal_rate)
+
+            self.number_of_goals += 1
+
         return reward
+
+    # def step(self, action, past_action):
+    #     self.step_no += 1
+    #
+    #     # print(self.agent_type)
+    #
+    #
+    #     if self.agent_type == 'dqn' or self.agent_type == 'DQN':
+    #         action_size = 5
+    #         max_angular_vel = 1.5
+    #         ang_vel = ((action_size - 1)/2 - action) * max_angular_vel * 0.5
+    #
+    #         vel_cmd = Twist()
+    #         vel_cmd.linear.x = 0.15
+    #         vel_cmd.angular.z = ang_vel
+    #         self.pub_cmd_vel.publish(vel_cmd)
+    #
+    #     else:
+    #         wheel_vel_l = action[0]
+    #         wheel_vel_r = action[1]
+    #
+    #         # print("action: " + str(action))
+    #
+    #         vel_cmd_l = Twist()
+    #         vel_cmd_l.linear.x = wheel_vel_l
+    #
+    #         vel_cmd_r = Twist()
+    #         vel_cmd_r.linear.x = wheel_vel_r
+    #
+    #         self.pub_cmd_vel_l.publish(vel_cmd_l)
+    #         self.pub_cmd_vel_r.publish(vel_cmd_r)
+    #
+    #     data = None
+    #     while data is None:
+    #         try:
+    #             data = rospy.wait_for_message('scan', LaserScan, timeout=5)
+    #         except:
+    #             pass
+    #
+    #
+    #
+    #
+    #     if self.agent_type == 'dqn' or self.agent_type == 'DQN':
+    #         state, done = self.getStateDQN(data)
+    #         reward = self.setReward(state, done)
+    #
+    #     else:
+    #         state, done = self.getState(data, past_action)
+    #         reward = self.setReward(state, done)
+    #
+    #
+    #     goal = False
+    #     if self.get_goalbox:
+    #         done = True
+    #         self.get_goalbox = False
+    #         goal = True
+    #
+    #     # print("state: " + str(state))
+    #     # print("state as array: " + str(np.asarray(state)))
+    #
+    #     return np.asarray(state), reward, done, goal
+
 
     def step(self, action, past_action):
         self.step_no += 1
+
+        # print("step")
+
+        # print(self.agent_type)
+
+
         wheel_vel_l = action[0]
         wheel_vel_r = action[1]
+
+        # print("action: " + str(action))
 
         vel_cmd_l = Twist()
         vel_cmd_l.linear.x = wheel_vel_l
@@ -183,13 +420,60 @@ class Env():
             except:
                 pass
 
+
+
+
         state, done = self.getState(data, past_action)
         reward = self.setReward(state, done)
+
+
         goal = False
         if self.get_goalbox:
             done = True
             self.get_goalbox = False
             goal = True
+
+        # print("state: " + str(state))
+        # print("state as array: " + str(np.asarray(state)))
+
+        return np.asarray(state), reward, done, goal
+
+
+    def stepDQN(self, action):
+        self.step_no += 1
+
+
+        action_size = 5
+        max_angular_vel = 1.5
+        ang_vel = ((action_size - 1)/2 - action) * max_angular_vel * 0.5
+
+        vel_cmd = Twist()
+        vel_cmd.linear.x = 0.15
+        vel_cmd.angular.z = ang_vel
+        self.pub_cmd_vel.publish(vel_cmd)
+
+        data = None
+        while data is None:
+            try:
+                data = rospy.wait_for_message('scan', LaserScan, timeout=5)
+            except:
+                pass
+
+
+
+
+        state, done = self.getStateDQN(data)
+        reward = self.setReward(state, done)
+
+
+        goal = False
+        if self.get_goalbox:
+            done = True
+            self.get_goalbox = False
+            goal = True
+
+        # print("state: " + str(state))
+        # print("state as array: " + str(np.asarray(state)))
 
         return np.asarray(state), reward, done, goal
 
@@ -209,12 +493,35 @@ class Env():
                 print("scan failed")
                 pass
 
+        # self.respawn_goal.deleteModel()
+
         if self.initGoal:
-            self.goal_x, self.goal_y = self.respawn_goal.moduleRespawns(self.env_module_id is None)
+            # self.goal_x, self.goal_y = self.respawn_goal.moduleRespawns(self.env_module_id is None)
+            # self.initGoal = False
+
+            self.goal_x, self.goal_y, self.position.x, self.position.y = self.respawn_goal.moduleRespawns(self.env_module_id is None)
+
+            # self.respawn_goal.deleteModel()
+            # time.sleep(0.5)
+            # self.respawn_goal.respawnGoal()
+
             self.initGoal = False
         else:
-            self.goal_x, self.goal_y = self.respawn_goal.moduleRespawns(
+            # self.goal_x, self.goal_y = self.respawn_goal.moduleRespawns(
+            #     (self.step_no >= 200) and (self.env_module_id is None))
+
+            self.goal_x, self.goal_y, self.position.x, self.position.y = self.respawn_goal.moduleRespawns(
                 (self.step_no >= 200) and (self.env_module_id is None))
+
+            # self.respawn_goal.deleteModel()
+            # time.sleep(0.5)
+            # self.respawn_goal.respawnGoal()
+
+        # self.respawn_goal.deleteModel()
+
+        self.respawn_goal.deleteModel()
+        time.sleep(0.5)
+        self.respawn_goal.respawnGoal()
 
         print('Environment: {}'.format(self.respawn_goal.currentModuleName()))
 
@@ -243,15 +550,42 @@ class Env():
         logfile.write(json.dumps(log) + "\n")
         logfile.close
 
+        # Display data live and save them to csv files
+    def DispEpisodeCSV(self, reward, collision_count, goal_count, step_count, GoalRates, num_goals):
+        self.ep_number = self.ep_number + 1
+        log = {
+            "ep_number": self.ep_number,
+            "environment": self.respawn_goal.currentModuleName(),
+            "reward_for_ep": reward,
+            "steps": step_count,
+            "collision_count": collision_count,
+            "goal_count": goal_count
+        }
+
+        if len(GoalRates) == 0:
+            self.result.data = [reward, self.respawn_goal.currentModuleIndex(), self.current_time, float("%.4f" % 0), num_goals]
+        else:
+            self.result.data = [reward, self.respawn_goal.currentModuleIndex(), self.current_time, float("%.4f" % GoalRates[-1]), num_goals]
+
+
+        self.pub_result.publish(self.result)
+
+
 
 
     def createLog(self):
-        logpath = os.path.dirname(os.path.realpath(__file__)) + "/training_logs"
-        self.log_file = logpath + "/" + self.agent_type + "-" + str(int(time.time())) + ".txt"
+
+        dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/env/{}ing_logs/{}/env-{}'.format(sys.argv[1], self.agent_type, self.env_module_id)
+
+        logpath = os.path.dirname(os.path.realpath(__file__)) + dirPath
+
+        self.current_time = int(time.time())
+
+        self.log_file = logpath + "/" + self.agent_type + "-" + str(self.current_time) + ".txt"
 
 
         try:
-            os.mkdir(logpath)
+            os.makedirs(logpath)
         except:
             pass
 

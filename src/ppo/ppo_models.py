@@ -70,10 +70,15 @@ class PPO:
         self.v_min = v_min
         self.v_max = v_max
         self.actions = [[0,0], [0,v_max], [v_max, 0], [v_max, v_max]]
+        # self.actions = [[0,0], [0,v_max], [v_max, 0], [v_max, v_max], [0,-v_max], [-v_max, 0], [-v_max, -v_max]]
         self.policy = ActorCritic(state_dim, action_dim, action_std).to(device)
         self.optimizer = torch.optim.Adam(self.policy.parameters(), lr=lr, betas=betas)
         self.policy_old = ActorCritic(state_dim, action_dim, action_std).to(device)
         self.savePath = savePath
+
+        self.state_dim = state_dim
+        self.action_dim = action_dim
+        self.action_std = action_std
 
         self.MseLoss = nn.MSELoss()
 
@@ -102,6 +107,70 @@ class PPO:
     def load_models(self, episode):
         self.policy.load_state_dict(torch.load(os.path.join(self.savePath, str(episode_count) + '_policy.pth')))
         self.policy_old.load_state_dict(torch.load(os.path.join(self.savePath, str(episode_count) + '_policy_old.pth')))
+
+
+
+    def save_models_latest(self, episode_count):
+        # if not os.path.exists(os.path.join(self.savePath, '/ppo/')):
+        #     os.mkdir(os.path.join(self.savePath, '/ppo/'))
+        torch.save(self.policy.state_dict(), os.path.join(self.savePath, 'policy.pth'))
+        torch.save(self.policy_old.state_dict(), os.path.join(self.savePath, 'policy_old.pth'))
+
+    def save_models_latest_combine(self, episode_count):
+        # if not os.path.exists(os.path.join(self.savePath, '/ppo/')):
+        #     os.mkdir(os.path.join(self.savePath, '/ppo/'))
+        torch.save(self.policy_sim.state_dict(), os.path.join(self.savePath, 'policy_sim.pth'))
+        torch.save(self.policy_old_sim.state_dict(), os.path.join(self.savePath, 'policy_old_sim.pth'))
+        torch.save(self.policy_real.state_dict(), os.path.join(self.savePath, 'policy_real.pth'))
+        torch.save(self.policy_old_real.state_dict(), os.path.join(self.savePath, 'policy_old_real.pth'))
+
+    def load_models_latest(self, episode):
+        self.policy.load_state_dict(torch.load(os.path.join(self.savePath, 'policy.pth')))
+        self.policy_old.load_state_dict(torch.load(os.path.join(self.savePath, 'policy_old.pth')))
+
+    def load_models_latest_combine(self, episode):
+
+        self.policy_sim = ActorCritic(self.state_dim, self.action_dim, self.action_std).to(device)
+        self.policy_old_sim = ActorCritic(self.state_dim, self.action_dim, self.action_std).to(device)
+        self.policy_real = ActorCritic(self.state_dim, self.action_dim, self.action_std).to(device)
+        self.policy_old_real = ActorCritic(self.state_dim, self.action_dim, self.action_std).to(device)
+        self.policy_combine = ActorCritic(self.state_dim, self.action_dim, self.action_std).to(device)
+        self.policy_old_combine = ActorCritic(self.state_dim, self.action_dim, self.action_std).to(device)
+
+        self.policy_sim.load_state_dict(torch.load(os.path.join(self.savePath, 'policy_sim.pth')))
+        self.policy_old_sim.load_state_dict(torch.load(os.path.join(self.savePath, 'policy_old_sim.pth')))
+        self.policy_real.load_state_dict(torch.load(os.path.join(self.savePath, 'policy_real.pth')))
+        self.policy_old_real.load_state_dict(torch.load(os.path.join(self.savePath, 'policy_old_real.pth')))
+
+        sdSim = self.policy_sim.state_dict()
+        sdSimOld = self.policy_old_sim.state_dict()
+        sdReal = self.policy_real.state_dict()
+        sdRealOld = self.policy_old_real.state_dict()
+        sdCombine = self.policy_combine.state_dict()
+        sdCombineOld = self.policy_old_combine.state_dict()
+
+        for w in sdSim:
+            # sdCombine[w] = 0.70 * sdSim[w] + 0.30 * sdReal[w]
+            # sdCombineOld[w] = 0.70 * sdSimOld[w] + 0.30 * sdRealOld[w]
+
+            # sdCombine[w] = 0.80 * sdSim[w] + 0.20 * sdReal[w]
+            # sdCombineOld[w] = 0.80 * sdSimOld[w] + 0.20 * sdRealOld[w]
+
+            # sdCombine[w] = 1.00 * sdSim[w] + 0.00 * sdReal[w]
+            # sdCombineOld[w] = 1.00 * sdSimOld[w] + 0.00 * sdRealOld[w]
+
+            sdCombine[w] = 0.00 * sdSim[w] + 1.00 * sdReal[w]
+            sdCombineOld[w] = 0.00 * sdSimOld[w] + 1.00 * sdRealOld[w]
+
+            # sdCombine[w] = 0.30 * sdSim[w] + 0.70 * sdReal[w]
+            # sdCombineOld[w] = 0.30 * sdSimOld[w] + 0.70 * sdRealOld[w]
+
+        self.policy.load_state_dict(sdCombine)
+        self.policy_old.load_state_dict(sdCombineOld)
+
+
+
+
 
     def update(self, memory):
         # Monte Carlo estimate of state rewards:

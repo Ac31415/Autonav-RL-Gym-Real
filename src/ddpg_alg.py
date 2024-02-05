@@ -225,14 +225,64 @@ class Trainer:
         soft_update(self.target_actor, self.actor, TAU)
         soft_update(self.target_critic, self.critic, TAU)
 
-    def save_models(self, episode_count):
-        torch.save(self.target_actor.state_dict(), dirPath +'/saved_models/ddpg/'+str(episode_count)+ '_actor.pt')
-        torch.save(self.target_critic.state_dict(), dirPath + '/saved_models/ddpg/'+str(episode_count)+ '_critic.pt')
+    # # def save_models(self, episode_count):
+    # #     torch.save(self.target_actor.state_dict(), dirPath +'/saved_models/ddpg/'+str(episode_count)+ '_actor.pt')
+    # #     torch.save(self.target_critic.state_dict(), dirPath + '/saved_models/ddpg/'+str(episode_count)+ '_critic.pt')
+    # #     print('****Models saved***')
+    # #
+    # # def load_models(self, episode):
+    # #     self.actor.load_state_dict(torch.load(dirPath + '/saved_models/ddpg/'+str(episode)+ '_actor.pt'))
+    # #     self.critic.load_state_dict(torch.load(dirPath + '/saved_models/ddpg/'+str(episode)+ '_critic.pt'))
+    # #     hard_update(self.target_actor, self.actor)
+    # #     hard_update(self.target_critic, self.critic)
+    # #     print('***Models load***')
+    #
+    # def save_models(self, episode_count):
+    #     torch.save(self.target_actor.state_dict(), dirPath + str(episode_count) + '_actor.pt')
+    #     torch.save(self.target_critic.state_dict(), dirPath + str(episode_count) + '_critic.pt')
+    #     print('****Models saved***')
+    #
+    # def load_models(self, episode):
+    #     self.actor.load_state_dict(torch.load(dirPath + str(episode) + '_actor.pt'))
+    #     self.critic.load_state_dict(torch.load(dirPath + str(episode) + '_critic.pt'))
+    #     hard_update(self.target_actor, self.actor)
+    #     hard_update(self.target_critic, self.critic)
+    #     print('***Models load***')
+    #
+    # def save_models_latest(self, episode_count):
+    #     torch.save(self.target_actor.state_dict(), dirPath + 'actor.pt')
+    #     torch.save(self.target_critic.state_dict(), dirPath + 'critic.pt')
+    #     print('****Models saved***')
+    #
+    # def load_models_latest(self, episode):
+    #     self.actor.load_state_dict(torch.load(dirPath + 'actor.pt'))
+    #     self.critic.load_state_dict(torch.load(dirPath + 'critic.pt'))
+    #     hard_update(self.target_actor, self.actor)
+    #     hard_update(self.target_critic, self.critic)
+    #     print('***Models load***')
+
+
+
+    def save_models(self, episode_count, dirpath):
+        torch.save(self.target_actor.state_dict(), dirpath + str(episode_count) + '_actor.pt')
+        torch.save(self.target_critic.state_dict(), dirpath + str(episode_count) + '_critic.pt')
         print('****Models saved***')
 
-    def load_models(self, episode):
-        self.actor.load_state_dict(torch.load(dirPath + '/saved_models/ddpg/'+str(episode)+ '_actor.pt'))
-        self.critic.load_state_dict(torch.load(dirPath + '/saved_models/ddpg/'+str(episode)+ '_critic.pt'))
+    def load_models(self, episode, dirpath):
+        self.actor.load_state_dict(torch.load(dirpath + str(episode) + '_actor.pt'))
+        self.critic.load_state_dict(torch.load(dirpath + str(episode) + '_critic.pt'))
+        hard_update(self.target_actor, self.actor)
+        hard_update(self.target_critic, self.critic)
+        print('***Models load***')
+
+    def save_models_latest(self, episode_count, dirpath):
+        torch.save(self.target_actor.state_dict(), dirpath + 'actor.pt')
+        torch.save(self.target_critic.state_dict(), dirpath + 'critic.pt')
+        print('****Models saved***')
+
+    def load_models_latest(self, episode, dirpath):
+        self.actor.load_state_dict(torch.load(dirpath + 'actor.pt'))
+        self.critic.load_state_dict(torch.load(dirpath + 'critic.pt'))
         hard_update(self.target_actor, self.actor)
         hard_update(self.target_critic, self.critic)
         print('***Models load***')
@@ -243,7 +293,23 @@ class Trainer:
 
 class DDPG_agent:
 
-    def __init__(self, load_ep, env, max_timesteps):
+    # def __init__(self, load_ep, env, max_timesteps):
+    #     self.env = env
+    #     self.load_ep = load_ep
+    #     self.time_step = 0
+    #     self.max_timesteps = max_timesteps
+    #     self.var_v = ACTION_V_MAX*0.20
+    #     self.past_action = np.array([0.,0.])
+    #
+    #     self.ram = ram
+    #     self.trainer = Trainer(STATE_DIMENSION, ACTION_DIMENSION, ACTION_V_MAX, ACTION_V_MAX, self.ram)
+    #
+    #     if (load_ep > 0):
+    #         # self.trainer.load_models(load_ep)
+    #         self.trainer.load_models_latest(load_ep)
+
+
+    def __init__(self, load_ep, env, max_timesteps, dirpath):
         self.env = env
         self.load_ep = load_ep
         self.time_step = 0
@@ -254,8 +320,14 @@ class DDPG_agent:
         self.ram = ram
         self.trainer = Trainer(STATE_DIMENSION, ACTION_DIMENSION, ACTION_V_MAX, ACTION_V_MAX, self.ram)
 
+
+        self.dirpath = dirpath
+
         if (load_ep > 0):
-            self.trainer.load_models(load_ep)
+            # self.trainer.load_models(load_ep)
+            # self.trainer.load_models_latest(load_ep)
+            self.trainer.load_models_latest(load_ep, self.dirpath)
+
 
     # called every step
     def step(self, state, ep):
@@ -287,5 +359,9 @@ class DDPG_agent:
 
 
     def save(self, ep):
-        if ep%50 == 0:
-            self.trainer.save_models(ep)
+        # if ep%50 == 0:
+        #     # self.trainer.save_models(ep)
+        #     # self.trainer.save_models_latest(ep)
+        #     self.trainer.save_models_latest(ep, self.dirpath)
+
+        self.trainer.save_models_latest(ep, self.dirpath)

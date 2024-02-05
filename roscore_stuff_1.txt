@@ -1,0 +1,1000 @@
+ 1027  cat santabot.log 
+ 1028  conda deactivate
+ 1029  conda TBMLTesting
+ 1030  conda activateTBMLTesting
+ 1031  conda activate TBMLTesting
+ 1032  cd catkin_
+ 1033  cd catkin_noetic_ws/
+ 1034  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle.launch 
+ 1035  roslaunch nmpc_lbf nmpc_lbf_launch.launch 
+ 1036  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle.launch 
+ 1037  ls /opt/ros/
+ 1038  ls /opt/ros/noetic/share/
+ 1039  ls /opt/ros/noetic/share/turtlebot3/
+ 1040  ls /opt/ros/noetic/share/turtlebot3_description/
+ 1041  ls /opt/ros/noetic/share/turtlebot3_description/urdf/
+ 1042  roslaunch nmpc_lbf nmpc_lbf_launch.launch 
+ 1043  cd src/
+ 1044  ls -al
+ 1045  cd ..
+ 1046  catkin_create_package nmpc_lbf rospy
+ 1047  source devel/setup.bash 
+ 1048  catkin_create_package nmpc_lbf rospy
+ 1049  cd src/
+ 1050  git clone https://github.com/asalimil/NMPC-LBF.git
+ 1051  cd ..
+ 1052  catkin_make --only-pkg-with-deps asd
+ 1053  ls -al src/
+ 1054  ls -al src/NMPC-LBF/
+ 1055  catkin_make --only-pkg-with-deps NMPC-LBF
+ 1056  catkin_create_package nmpc_lbf rospy
+ 1057  catkin_create_package NMPC-LBF rospy
+ 1058  catkin_make --only-pkg-with-deps NMPC-LBF
+ 1059  catkin_make --only-pkg-with-deps nmpc-lbf
+ 1060  catkin_create_pkg NMPC-LBF rospy
+ 1061  ls -al
+ 1062  ls NMPC-LBF/
+ 1063  ls NMPC-LBF/src/
+ 1064  catkin_create_pkg nmpc_lbf rospy
+ 1065  catkin_make --only-pkg-with-deps nmpc_lbf
+ 1066  roslaunch nmpc_lbf nmpc_lbf_launch.launch 
+ 1067  chmod +x src/nmpc_lbf/src/nmpc_lbf.py 
+ 1068  roslaunch nmpc_lbf nmpc_lbf_launch.launch 
+ 1069  chmod +x src/nmpc_lbf/nodes/combination_obstacle_1_s12.py src/nmpc_lbf/nodes/combination_obstacle_2_s12.py src/nmpc_lbf/nodes/combination_obstacle_3_s12.py src/nmpc_lbf/nodes/combination_obstacle_4_s12.py
+ 1070  roslaunch nmpc_lbf nmpc_lbf_launch.launch 
+ 1071  catkin_make --only-pkg-with-deps nmpc_lbf
+ 1072  roslaunch nmpc_lbf nmpc_lbf_launch.launch 
+ 1073  chmod +x src/turtlebot3_machine_learning/turtlebot3_dqn/nodes/turtlebot3_dqn_stage_2_accum_64steps_clear_and_NMPC_LBF
+ 1074  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_NMPC_all_enabled_no_obstacle.launch 
+ 1075  roslaunch nmpc_lbf nmpc_lbf_launch.launch 
+ 1076  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_NMPC_all_enabled_no_obstacle.launch 
+ 1077  roslaunch nmpc_lbf nmpc_lbf_launch.launch 
+ 1078  conda deactivate
+ 1079  sudo apt remove discord
+ 1080  apt --fix-broken install
+ 1081  sudo apt --fix-broken install
+ 1082  sudo apt remove --purge discord
+ 1083  sudo apt --fix-broken install
+ 1084  sudo apt remove --purge linux-tools-common
+ 1085  sudo apt --fix-broken install
+ 1086  sudo apt remove --purge linux-tools-common_5.4.0-137.154_all
+ 1087  sudo apt remove --purge linux-intel-iotg-5.15-tools-common
+ 1088  sudo apt remove --purge linux-intel-iotg-5.15-tools-common 5.15.0-1021.26~20.04.1
+ 1089  sudo apt remove --purge linux-intel-iotg-5.15-tools-common-5.15.0-1021.26~20.04.1
+ 1090  sudo apt remove --purge linux-intel-iotg-5.15-tools-common
+ 1091  sudo apt --fix-broken install
+ 1092  sudo dpkg --remove --force-remove-reinstreq linux-intel-iotg-5.15-tools-common
+ 1093  sudo apt --fix-broken install
+ 1094  sudo apt remove --purge discord
+ 1095  nvidia-smi --query-gpu-name --format=csv, noheader
+ 1096  nvidia-smi --query-gpu=name --format=csv, noheader
+ 1097  nvidia-smi --query-gpu=name --format=csv,noheader
+ 1098  cat /proc/cpuinfo | grep 'model name' | uniq
+ 1099  cat /proc/cpuinfo | grep processor
+ 1100  sudo apt-get remove docker docker-engine docker.io containerd runc
+ 1101  python -V
+ 1102  ls -al Downloads/
+ 1103  ./Downloads/uniflash_sl.8.1.1.4146.run
+ 1104  chmod +x ./Downloads/uniflash_sl.8.1.1.4146.run
+ 1105  ./Downloads/uniflash_sl.8.1.1.4146.run
+ 1106  python -m venv attack_design
+ 1107  sudo apt install python3.8-venv
+ 1108  python -m venv attack_design
+ 1109  source attack_design/bin/activate
+ 1110  git clone https://github.com/mitre-cyber-academy/2023-ectf-tools.git
+ 1111  python -m pip install -e 2023-ectf-tools/
+ 1112  cd 2023-ectf-tools/
+ 1113  python -m pip install -e .
+ 1114  ls -al
+ 1115  python -m pip install -e asdas
+ 1116  cd ..
+ 1117  deactivate
+ 1118  cd Design_and_Attack_Digital_systems/
+ 1119  source attack_design/bin/activate
+ 1120  python -m pip install -e 2023-ectf-tools/
+ 1121  cd 2023-ectf-tools/
+ 1122  python -m pip install -e .
+ 1123  ls -al
+ 1124  ls ectf_tools/
+ 1125  ls bootloader/
+ 1126  cd ..
+ 1127  ls -al
+ 1128  python -m pip install -e .
+ 1129  python -m pip install -e
+ 1130  python -m pip install -e 2023-ectf-tools/
+ 1131  python3 -m pip install -e 2023-ectf-tools/
+ 1132  python -m pip install --upgrade pip
+ 1133  python -m pip install -e 2023-ectf-tools/
+ 1134  git clone https://github.com/mitre-cyber-academy/2023-ectf-insecure-example --recurse-submodules
+ 1135  sudo git clone https://github.com/mitre-cyber-academy/2023-ectf-insecure-example --recurse-submodules
+ 1136  git remote rename origin example
+ 1137  ls -al 2023-ectf-insecure-example/
+ 1138  rm -rf 2023-ectf-insecure-example
+ 1139  sudo git clone https://github.com/mitre-cyber-academy/2023-ectf-insecure-example --recurse-submodules
+ 1140  ls -al /home/wen-chung/Design_and_Attack_Digital_systems/2023-ectf-insecure-example/car/lib
+ 1141  ls -al /home/wen-chung/Design_and_Attack_Digital_systems/2023-ectf-insecure-example/car/lib/tiny-AES-c/
+ 1142  rm -rf 2023-ectf-insecure-example
+ 1143  sudo rm -rf 2023-ectf-insecure-example
+ 1144  ls -al
+ 1145  git clone https://github.com/mitre-cyber-academy/2023-ectf-insecure-example.git
+ 1146  ls 2023-ectf-insecure-example/car/lib/
+ 1147  ls 2023-ectf-insecure-example/car/lib/tiny-AES-c/
+ 1148  ls -al 2023-ectf-insecure-example/car/lib/tiny-AES-c/
+ 1149  sudo rm -rf 2023-ectf-insecure-example
+ 1150  sudo git clone https://github.com/mitre-cyber-academy/2023-ectf-insecure-example --recurse-submodules
+ 1151  cd 2023-ectf-insecure-example/car/lib
+ 1152  ls -al
+ 1153  ls tivaware/
+ 1154  cd tiny-AES-c/
+ 1155  ls -al
+ 1156  git clone https://github.com/kokke/tiny-AES-c.git
+ 1157  sudo git clone https://github.com/kokke/tiny-AES-c.git
+ 1158  ls -al
+ 1159  cd ..
+ 1160  ls -al
+ 1161  sudo rm -rf tiny-AES-c
+ 1162  sudo git clone https://github.com/kokke/tiny-AES-c.git
+ 1163  cd ~/Design_and_Attack_Digital_systems/2023-ectf-insecure-example/fob/lib
+ 1164  ls -al
+ 1165  sudo rm -rf tiny-AES-c/
+ 1166  ls -al
+ 1167  sudo git clone https://github.com/kokke/tiny-AES-c.git
+ 1168  ls -al
+ 1169  cd ../..
+ 1170  cd ..
+ 1171  ls -al
+ 1172  git remote rename origin example
+ 1173  cd 2023-ectf-insecure-example/
+ 1174  ls -al
+ 1175  git remote rename origin example
+ 1176  git config --global --add safe.directory /home/wen-chung/Design_and_Attack_Digital_systems/2023-ectf-insecure-example
+ 1177  git remote rename origin example
+ 1178  sudo git remote rename origin example
+ 1179  git remote add origin https://github.com/Ac31415/2023-ectf-insecure-example.git
+ 1180  sudo git remote add origin https://github.com/Ac31415/2023-ectf-insecure-example.git
+ 1181  git fetch example
+ 1182  sudo git fetch example
+ 1183  sudo git fetch origin
+ 1184  sudo git push origin
+ 1185  rostopic list
+ 1186  rostopic echo /odom
+ 1187  rostopic list
+ 1188  conda activate TBMLTesting
+ 1189  rostopic list
+ 1190  rostopic info /odom
+ 1191  rostopic echo /odom
+ 1192  rostopic list
+ 1193  rostopic echo /tf
+ 1194  rostopic echo /tf_static
+ 1195  rostopic list
+ 1196  rostopic echo /map
+ 1197  rostopic list
+ 1198  rostopic echo /tf
+ 1199  rostopic echo /tf/odom
+ 1200  rostopic echo /odom
+ 1201  rostopic list
+ 1202  rostopic echo /odom
+ 1203  rostopic echo /tf
+ 1204  rostopic echo /odom
+ 1205  rostopic echo /tf
+ 1206  rostopic echo /tf.map
+ 1207  rostopic list
+ 1208  rostopic echo /tf
+ 1209  rostopic echo /map
+ 1210  rostopic echo /odom
+ 1211  conda activate TBMLTesting
+ 1212  hostname -I
+ 1213  ssh pi@192.168.1.5
+ 1214  conda activate TBMLTesting
+ 1215  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1216  export TURTLEBOT3_MODEL=burger
+ 1217  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1218  roslaunch turtlebot3_gazebo turtlebot3_simulation.launch
+ 1219  $ roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1220  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1221  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1222  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1223  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1224  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1225  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1226  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1227  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1228  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1229  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1230  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1231  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1232  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1233  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1234  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1235  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1236  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1237  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1238  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1239  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1240  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1241  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1242  conda deactivate
+ 1243  rostopic list
+ 1244  rostopic echo /battery_state
+ 1245  rostopic info /battery_state
+ 1246  conda activate TMBLTesting
+ 1247  conda activate TBMLTesting
+ 1248  rostopic echo /battery_state
+ 1249  rostopic info /battery_state
+ 1250  conda deactivate
+ 1251  ls -al
+ 1252  cd ..
+ 1253  ls -al
+ 1254  cd Design_and_Attack_Digital_systems
+ 1255  ls -al
+ 1256  python3 -V
+ 1257  python -V
+ 1258  python -m pip install --user virtualenv
+ 1259  python -m venv attack
+ 1260  ls -al
+ 1261  source env/bin/activate
+ 1262  source attack/bin/activate
+ 1263  python -m pip install -e 2023-ectf-tools
+ 1264  python -m pip install -e 2023-ectf-tools/
+ 1265  python3 -m pip install -e 2023-ectf-tools/
+ 1266  ls 2023-ectf-tools/
+ 1267  python3 -m pip install setuptools
+ 1268  python3 -m pip install --upgrade setuptools
+ 1269  python3 -m pip install -e 2023-ectf-tools/
+ 1270  python3 -m pip install -e 2023-ectf-tools
+ 1271  python3 -m pip install --upgrade pip
+ 1272  python3 -m pip install -e 2023-ectf-tools
+ 1273  python3 -m ectf_tools --debug build.env --design 2023-ectf-insecure-example --name BootRef
+ 1274  sudo modprobe kvm
+ 1275  sudo python3 -m ectf_tools --debug build.env --design 2023-ectf-insecure-example --name BootRef
+ 1276  sudo modprobe kvm_intel
+ 1277  ls -al
+ 1278  sudo python3 -m ectf_tools --debug build.env --design 2023-ectf-insecure-example --name BootRef
+ 1279  python3 -m ectf_tools --debug build.env --design 2023-ectf-insecure-example --name BootRef
+ 1280  conda deactivate 
+ 1281  ssh pi@192.168.1.3
+ 1282  conda deactivate
+ 1283  conda activate TBMLTesting
+ 1284  roscore
+ 1285  conda deactivate
+ 1286  cd ~
+ 1287  ls -al
+ 1288  cd Design_and_Attack_Digital_systems
+ 1289  ls -al
+ 1290  conda deactivate
+ 1291  hostname -I
+ 1292  nmap -sP 192.168.1.0/24
+ 1293  conda deactivate
+ 1294  sudo apt-get install texlive-latex-base
+ 1295  sudo apt-get install texlive-fonts-recommended
+ 1296  sudo apt-get install texlive-fonts-extra
+ 1297  sudo apt-get install texlive-latex-extra
+ 1298  ls -al
+ 1299  mkdir latexNN
+ 1300  cd latexNN/
+ 1301  git clone https://github.com/HarisIqbal88/PlotNeuralNet.git
+ 1302  cd PlotNeuralNet/
+ 1303  cd pyexamples/
+ 1304  bash ../tikzmake.sh test_simple
+ 1305  cd ..
+ 1306  ls -al
+ 1307  mkdir my_project
+ 1308  ls -al
+ 1309  cd my_project/
+ 1310  sudo nano my_arch.py
+ 1311  bash ../tikzmake.sh my_arch
+ 1312  sudo nano my_arch.py
+ 1313  bash ../tikzmake.sh my_arch
+ 1314  sudo nano my_arch.py
+ 1315  bash ../tikzmake.sh my_arch
+ 1316  sudo nano my_arch.py
+ 1317  bash ../tikzmake.sh my_arch
+ 1318  sudo nano my_arch.py
+ 1319  bash ../tikzmake.sh my_arch
+ 1320  sudo nano my_arch.py
+ 1321  bash ../tikzmake.sh my_arch
+ 1322  sudo nano my_arch.py
+ 1323  bash ../tikzmake.sh my_arch
+ 1324  ls -al ..
+ 1325  ls ../pyexamples/
+ 1326  cd ../pyexamples/
+ 1327  bash ../tikzmake.sh unet
+ 1328  cd ../my_project/
+ 1329  ls -al
+ 1330  bash ../tikzmake.sh my_arch
+ 1331  bash ../tikzmake.sh my_arch_1
+ 1332  conda deactivate
+ 1333  conda activate dadasd
+ 1334  conda info --envs
+ 1335  cd ../catkin_noetic_ws/
+ 1336  conda activate TBMLTesting
+ 1337  cp /home/wen-chung/catkin_noetic_ws/src/turtlebot3_machine_learning/turtlebot3_dqn/nodes/turtlebot3_dqn_stage_2_accum_64steps_clear_real /home/wen-chung/catkin_noetic_ws/src/turtlebot3_machine_learning/turtlebot3_dqn/nodes/turtlebot3_dqn_stage_2_accum_64steps_clear_real_correct_count
+ 1338  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch 
+ 1339  chmod +x /home/wen-chung/catkin_noetic_ws/src/turtlebot3_machine_learning/turtlebot3_dqn/nodes/turtlebot3_dqn_stage_2_accum_64steps_clear_real_correct_count
+ 1340  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch 
+ 1341  export TURTLEBOT3_MODEL=burger
+ 1342  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch 
+ 1343  roslaunch turtlebot_teleop keyboard_teleop.launch
+ 1344  roslaunch turtlebot3_teleop keyboard_teleop.launch
+ 1345  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1346  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch 
+ 1347  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1348  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch 
+ 1349  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1350  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch 
+ 1351  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1352  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch 
+ 1353  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1354  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch 
+ 1355  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1356  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch 
+ 1357  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1358  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch 
+ 1359  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1360  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch 
+ 1361  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1362  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch 
+ 1363  source /home/wen-chung/Design_and_Attack_Digital_systems/attack/bin/activate
+ 1364  conda deactivate
+ 1365  source /home/wen-chung/Design_and_Attack_Digital_systems/attack/bin/activate
+ 1366  conda deactivate
+ 1367  sudo dpkg -i '/home/wen-chung/Downloads/microsoft-edge-stable_110.0.1587.57-1_amd64.deb' 
+ 1368  sudo apt-get install -f
+ 1369  conda deactivate
+ 1370  sudo dpkg -i '/media/wen-chung/Extreme Pro/Downloads/gcm-linux_amd64.2.0.886.deb' 
+ 1371  git-credential-manager configure
+ 1372  conda deactivate
+ 1373  ssh pi@192.168.1.3
+ 1374  ssh pi@192.168.1.3 
+ 1375  conda deactivate
+ 1376  cd ~
+ 1377  ls -al
+ 1378  conda deactivate
+ 1379  sudo apt install texlive-latex-extra
+ 1380  sudo apt install texlive-extra-utils
+ 1381  pdflatex Documents/hello_world.tex
+ 1382  evince hello-world.pdf
+ 1383  evince hello_world.pdf
+ 1384  cd Documents/
+ 1385  ls -al
+ 1386  pdflatex hello_world.tex
+ 1387  ls -al
+ 1388  evince hello_world.pdf
+ 1389  sudo apt install gedit-latex-plugin
+ 1390  conda deactivate
+ 1391  conda activate asdas
+ 1392  conda info --envs
+ 1393  conda activate TBMLTesting
+ 1394  cd catkin_noetic_ws/
+ 1395  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_steps_goal.launch 
+ 1396  ping 8.8.8.8
+ 1397  ping
+ 1398  conda deactivate
+ 1399  gedit
+ 1400  conda deactivate
+ 1401  conda activate TBMLTesting
+ 1402  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1403  cd catkin_noetic_ws/
+ 1404  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1405  export TURTLEBOT3_MODEL=burger
+ 1406  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1407  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_steps_goal.launch 
+ 1408  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle.launch 
+ 1409  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_steps_goal.launch 
+ 1410  chmod +x /home/wen-chung/catkin_noetic_ws/src/turtlebot3_machine_learning/turtlebot3_dqn/nodes/result_graph_stage_2_original
+ 1411  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle.launch 
+ 1412  chmod +x /home/wen-chung/catkin_noetic_ws/src/turtlebot3_machine_learning/turtlebot3_dqn/nodes/turtlebot3_dqn_stage_2_accum_64steps_clear_steps_goal_better_goal_rate
+ 1413  chmod +x /home/wen-chung/catkin_noetic_ws/src/turtlebot3_machine_learning/turtlebot3_dqn/src/turtlebot3_dqn/environment_stage_2_steps_goal_better_goal_rate.py
+ 1414  roslaunch Turtle
+ 1415  history > turtlebot_dqn_work.txt
+ 1416  ls -al
+ 1417  cd src
+ 1418  ls -al
+ 1419  git clone https://github.com/Kavka1/Turtlebot-Navigation-based-on-DRL.git
+ 1420  ls -al
+ 1421  cd ..
+ 1422  catkin_make --only-pkg-with-deps Turtlebot-Navigation-based-on-DRL
+ 1423  cd src
+ 1424  catkin_make --only-pkg-with-deps Turtlebot-Navigation-based-on-DRL
+ 1425  cd ..
+ 1426  source devel/setup.bash
+ 1427  catkin_make --only-pkg-with-deps Turtlebot-Navigation-based-on-DRL
+ 1428  catkin_make --only-pkg-with-deps navigation_turtlebot
+ 1429  roslaunch navigation_turtlebot
+ 1430  roslaunch navigation_turtlebot world_init.launch
+ 1431  roslaunch navigation_turtlebot run_all.launch
+ 1432  chmod +x /home/wen-chung/catkin_noetic_ws/src/Turtlebot-Navigation-based-on-DRL/src/main.py
+ 1433  roslaunch navigation_turtlebot run_all.launch
+ 1434  roslaunch navigation_turtlebot run_all.launch --is_training
+ 1435  roslaunch navigation_turtlebot run_all.launch is_training:=true
+ 1436  roslaunch navigation_turtlebot run_all.launch
+ 1437  rosclean check
+ 1438  rosclean
+ 1439  rosclean purge
+ 1440  roslaunch navigation_turtlebot run_all.launch is_training:=true
+ 1441  cd src/
+ 1442  ls -al
+ 1443  git clone https://github.com/SfTI-Robotics/Autonav-RL-Gym.git
+ 1444  cd ..
+ 1445  catkin_make --only-pkg-with-deps Autonav-RL-Gym
+ 1446  catkin_make --only-pkg-with-deps project
+ 1447  cd src/Autonav-RL-Gym/
+ 1448  ls -al
+ 1449  $ ./launch.sh test ppo 6000
+ 1450  ./launch.sh test ppo 6000
+ 1451  ./launch.sh train ppo
+ 1452  rosclean
+ 1453  rosclean check
+ 1454  rosclean purge
+ 1455  ./launch.sh train ppo
+ 1456  chmod +x /home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/util/result_graph_Autonav_RL_Gym_reward
+ 1457  ./launch.sh train ppo
+ 1458  ./launch.sh train ppo 100
+ 1459  ./launch.sh train ppo
+ 1460  ./launch.sh train ddpg
+ 1461  rosclean check
+ 1462  rosclean purge
+ 1463  ./launch.sh train ddpg
+ 1464  history > Autonav_History.tx
+ 1465  conda deactivate
+ 1466  nmap -sP 192.168.100.0/24
+ 1467  hostname -I
+ 1468  nmap -sP 192.168.1.0/24
+ 1469  nvidia-smi
+ 1470  cd catkin_noetic_ws/
+ 1471  history > network_GPU_history.txt
+ 1472  conda deactivate
+ 1473  ssh pi@192.168.1.3
+ 1474  cd catkin_noetic_ws/
+ 1475  history > remote_bot_history.txt
+ 1476  conda deactivate
+ 1477  cd catkin_noetic_ws/
+ 1478  conda TBMLTesting
+ 1479  conda activate TBMLTesting
+ 1480  roscore
+ 1481  rosclean
+ 1482  rosclean check
+ 1483  rosclean purge
+ 1484  roscore
+ 1485  history > roscore_history.txt
+ 1486  conda deactivate
+ 1487  jupyterlab
+ 1488  jupyter
+ 1489  jupyter --paths
+ 1490  jupyter -h
+ 1491  jupyter notebook
+ 1492  history > jupyter_notebook_history.txt
+ 1493  conda deactivate
+ 1494  sudo nano /etc/openvpn/client.conf
+ 1495  sudo systemctl start openvpn@client
+ 1496  sudo systemctl status openvpn@client
+ 1497  ping 131.91.208.166
+ 1498  sudo nano /etc/openvpn/client.conf
+ 1499  sudo journalctl -u openvpn@client -xe
+ 1500  ping 131.91.208.166
+ 1501  ping 131.91.208.166:1194
+ 1502  sudo nano /etc/openvpn/client.conf
+ 1503  sudo systemctl stop openvpn@client
+ 1504  sudo nano /etc/openvpn/client.conf
+ 1505  sudo systemctl start openvpn@client
+ 1506  sudo systemctl status openvpn@client
+ 1507  sudo journalctl -u openvpn@client -xe
+ 1508  ip addr show dev tun0
+ 1509  ping 10.166.96.1
+ 1510  sudo journalctl -u openvpn@client -xe
+ 1511  sudo systemctl stop openvpn@client
+ 1512  sudo nano /etc/openvpn/client.conf
+ 1513  history > vpn_history.txt
+ 1514  conda deactivate
+ 1515  sudo apt install openvpn
+ 1516  sudo cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf /etc/openvpn/
+ 1517  sudo nano /etc/openvpn/client.conf
+ 1518  sudo cp '/home/wen-chung/AndyKeys/Andy_Cheng.crt' '/home/wen-chung/AndyKeys/ca.crt' /etc/openvpn/
+ 1519  sudo nano /etc/openvpn/client.conf
+ 1520  client
+ 1521  sudo nano /etc/openvpn/client.conf
+ 1522  sudo systemctl start openvpn@client
+ 1523  sudo journalctl -u openvpn@myserver -xe
+ 1524  sudo journalctl -u openvpn@client -xe
+ 1525  sudo su -
+ 1526  sudo apt-get update
+ 1527  sudo apt-key del 7fa2af80
+ 1528  wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb
+ 1529  sudo dpkg -i cuda-keyring_1.0-1_all.deb
+ 1530  sudo apt-get update
+ 1531  sudo cp /var/cudnn-local-repo-ubuntu2204-8.5.0.96/cudnn-local-7ED72349-keyring.gpg /usr/share/keyrings/cuda-archive-keyring.gpg
+ 1532  ls -al /var/cudnn-local-repo-ubuntu2204-8.5.0.96
+ 1533  ls -al /var/cudnn-local-repo-ubuntu2004-8.5.0.96/
+ 1534  sudo cp /var/cudnn-local-repo-ubuntu2004-8.5.0.96/cudnn-local-0579404E-keyring.gpg /usr/share/keyrings/cuda-archive-keyring.gpg
+ 1535  sudo apt-get update
+ 1536  sudo dpkg -i cuda-keyring_1.0-1_all.deb
+ 1537  sudo apt-get update
+ 1538  sudo cp /var/cudnn-local-repo-ubuntu2004-8.5.0.96/cudnn-local-0579404E-keyring.gpg /usr/share/keyrings/cuda-archive-keyring.gpg
+ 1539  sudo apt-get update
+ 1540  sudo dpkg -i cuda-keyring_1.0-1_all.deb
+ 1541  sudo apt-get update
+ 1542  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B53DC80D13EDEF05
+ 1543  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B53DC80D13EDEF05
+ 1544  sudo apt-get update
+ 1545  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B53DC80D13EDEF05
+ 1546  sudo apt-get update
+ 1547  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys B53DC80D13EDEF05
+ 1548  sudo apt-get update
+ 1549  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg
+ 1550  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+ 1551  sudo apt-get update
+ 1552  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+ 1553  sudo apt-get update
+ 1554  sudo cp /var/cudnn-local-repo-ubuntu2004-8.5.0.96/cudnn-local-0579404E-keyring.gpg /usr/share/keyrings/cuda-archive-keyring.gpg
+ 1555  sudo apt-get update
+ 1556  sudo dpkg -i cuda-keyring_1.0-1_all.deb
+ 1557  sudo apt-get update
+ 1558  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A25849F90579404E
+ 1559  sudo apt-key adv --keyserver hkp://keys.gnupg.net:80 --recv-keys A25849F90579404E
+ 1560  sudo cp /var/cudnn-local-repo-ubuntu2004-8.5.0.96/cudnn-local-0579404E-keyring.gpg /usr/share/keyrings/cuda-archive-keyring.gpg
+ 1561  sudo apt-get update
+ 1562  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A25849F90579404E
+ 1563  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A4B469963BF863CC
+ 1564  sudo apt-get update
+ 1565  sudo dpkg -i cuda-keyring_1.0-1_all.deb
+ 1566  sudo apt-get update
+ 1567  ls -al ~
+ 1568  ls -al
+ 1569  sudo apt-get update
+ 1570  sudo dpkg -i '/media/wen-chung/Extreme Pro/Downloads/cudnn-local-repo-ubuntu2004-8.5.0.96_1.0-1_amd64.deb'
+ 1571  sudo cp /var/cudnn-local-repo-ubuntu2004-8.5.0.96/cudnn-local-0579404E-keyring.gpg /usr/share/keyrings/
+ 1572  sudo dpkg -i '/media/wen-chung/Extreme Pro/Downloads/cudnn-local-repo-ubuntu2004-8.5.0.96_1.0-1_amd64.deb'
+ 1573  sudo cp /var/cudnn-local-repo-ubuntu2004-8.5.0.96/cudnn-local-0579404E-keyring.gpg /usr/share/keyrings/cuda-archive-keyring.gpg
+ 1574  sudo dpkg -i '/media/wen-chung/Extreme Pro/Downloads/cudnn-local-repo-ubuntu2004-8.5.0.96_1.0-1_amd64.deb'
+ 1575  sudo apt-get update
+ 1576  sudo dpkg -i cuda-keyring_1.0-1_all.deb
+ 1577  sudo apt-get update
+ 1578  conda activate asdsa
+ 1579  conda info --envs
+ 1580  conda activate base
+ 1581  conda env export > base.yml
+ 1582  ls -al
+ 1583  conda deactivate
+ 1584  conda activate TBMLTesting
+ 1585  conda env export > TBMLTesting.yml
+ 1586  conda deactivate
+ 1587  conda activate tensorflow_quantum
+ 1588  conda env export > tensorflow_quantum.yml
+ 1589  conda deactivate
+ 1590  conda install anaconda-clean
+ 1591  anaconda-clean --yes
+ 1592  conda activate
+ 1593  anaconda-clean --yes
+ 1594  conda deactivate
+ 1595  rm -rf ~/anaconda2/
+ 1596  rm -rf ~/miniconda3/
+ 1597  sudo nano ~/.bashrc
+ 1598  source ~/.bashrc
+ 1599  bash '/media/wen-chung/Extreme Pro/Downloads/Anaconda3-2023.03-1-Linux-x86_64.sh' 
+ 1600  bash '/media/wen-chung/ExtremePro/Downloads/Anaconda3-2023.03-1-Linux-x86_64.sh' 
+ 1601  ls -al
+ 1602  bash '/media/wen-chung/ExtremePro/Downloads/Anaconda3-2023.03-1-Linux-x86_64.sh'
+ 1603  ls -al /dev
+ 1604  sudo bash '/media/wen-chung/ExtremePro/Downloads/Anaconda3-2023.03-1-Linux-x86_64.sh'
+ 1605  history > conda_install.txt
+ 1606  sudo apt-get update
+ 1607  conda deactivate
+ 1608  google-earth-pro 
+ 1609  sudo apt-get purge google-earth-stable
+ 1610  sudo bash '/media/wen-chung/ExtremePro/Downloads/Anaconda3-2023.03-1-Linux-x86_64.sh'
+ 1611  sudo bash '/media/wen-chung/ExtremePro/Downloads/Miniconda3-py310_23.3.1-0-Linux-x86_64.sh'
+ 1612  python -V
+ 1613  sudo bash '/media/wen-chung/ExtremePro/Downloads/Miniconda3-py310_23.3.1-0-Linux-x86_64.sh'
+ 1614  sudo bash '/media/wen-chung/ExtremePro/Downloads/Anaconda3-2023.03-0-Linux-x86_64.sh'
+ 1615  sudo bash '/media/wen-chung/ExtremePro/Downloads/Anaconda3-2022.10-Linux-x86_64.sh'
+ 1616  sudo bash /media/wen-chung/ExtremePro/Downloads/Anaconda3-2023.03-1-Linux-x86_64.sh
+ 1617  sudo bash '/media/wen-chung/ExtremePro/Downloads/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh'
+ 1618  sudo bash '/home/wen-chung/Downloads/Anaconda3-2023.03-1-Linux-x86_64.sh'
+ 1619  sudo sh '/home/wen-chung/Downloads/Anaconda3-2023.03-1-Linux-x86_64.sh'
+ 1620  ./home/wen-chung/Downloads/Anaconda3-2023.03-1-Linux-x86_64.sh
+ 1621  /home/wen-chung/Downloads/Anaconda3-2023.03-1-Linux-x86_64.sh
+ 1622  chmod +x /home/wen-chung/Downloads/Anaconda3-2023.03-1-Linux-x86_64.sh
+ 1623  /home/wen-chung/Downloads/Anaconda3-2023.03-1-Linux-x86_64.sh
+ 1624  chmod +x '/media/wen-chung/ExtremePro/Downloads/Anaconda3-2019.09.rc5-Linux-x86_64.sh'
+ 1625  /media/wen-chung/ExtremePro/Downloads/Anaconda3-2019.09.rc5-Linux-x86_64.sh
+ 1626  pip -V
+ 1627  python -V
+ 1628  /media/wen-chung/ExtremePro/Downloads/Anaconda3-2019.09.rc5-Linux-x86_64.sh
+ 1629  '/home/wen-chung/Downloads/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh'
+ 1630  nano ~/.bashrc
+ 1631  conda install anaconda-clean
+ 1632  conda activate
+ 1633  source ~/.bashrc
+ 1634  conda install anaconda-clean
+ 1635  anaconda-clean --yes
+ 1636  ls -al /home/wen-chung/.anaconda_backup/
+ 1637  conda deactivate
+ 1638  sudo rm -rf miniconda3/
+ 1639  ls -al
+ 1640  sudo nano ~/.bashrc
+ 1641  source ~/.bashrc
+ 1642  '/home/wen-chung/Downloads/Miniconda3-py310_23.3.1-0-Linux-x86_64.sh'
+ 1643  source ~/.bashrc
+ 1644  conda env create -f '/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1645  conda deactivate
+ 1646  conda
+ 1647  conda activate fdsfs
+ 1648  conda info --envs
+ 1649  conda remove --name TBMLTesting --all
+ 1650  conda env create -f '/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1651  conda activate
+ 1652  conda deactivate
+ 1653  conda install anaconda-clean
+ 1654  conda anaconda-clean
+ 1655  anaconda-clean
+ 1656  conda activate
+ 1657  anaconda-clean
+ 1658  anaconda-clean --yes
+ 1659  conda deactivate
+ 1660  sudo rm -rf miniconda3/
+ 1661  sudo nano ~/.bashrc
+ 1662  source ~/.bashrc
+ 1663  '/home/wen-chung/Downloads/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh'
+ 1664  source ~/.bashrc
+ 1665  conda deactivate
+ 1666  conda env create -f '/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1667  conda install anaconda-clean
+ 1668  conda activate
+ 1669  anaconda-clean --yes
+ 1670  conda deactivate
+ 1671  sudo rm -rf miniconda3/
+ 1672  sudo nano ~/.bashrc
+ 1673  source ~/.bashrc
+ 1674  '/media/wen-chung/ExtremePro/Downloads/Miniconda3-py37_23.1.0-1-Linux-x86_64.sh'
+ 1675  source ~/.bashrc
+ 1676  conda deactivate
+ 1677  conda env create -f '/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1678  亲爱的妈妈，
+ 1679  母亲节快乐！感谢您无私地为我和弟弟操劳，无论我们在成长过程中还是现在。您的无私奉献和悉心照料让我们感激不尽。
+ 1680  您是我们的支柱，给予了我们爱、支持和无尽的牺牲。您的坚定陪伴塑造了我们成为现在的样子。您无条件的爱给予了我们克服困难的力量，勇气去追求梦想。
+ 1681  随着我们的成长，我们越来越意识到您的爱的深度和您所做的牺牲。感谢您总是把我们的需求放在第一位。您的无私让人倍感鼓舞。
+ 1682  在这特殊的日子里，我们祈求上帝不断祝福您的心灵和身体。愿祂赐予您平安、喜乐和健康。我们感恩您无尽的爱，并珍视我们作为一个家庭共度的时光。
+ 1683  妈妈，母亲节快乐！
+ 1684  全心全意，
+ 1685  conda install anaconda-clean
+ 1686  conda activate
+ 1687  anaconda-clean --yes
+ 1688  onda deactivate
+ 1689  conda deactivate
+ 1690  rm -rf miniconda3/
+ 1691  sudo nano ~/.bashrc
+ 1692  source ~/.bashrc
+ 1693  '/media/wen-chung/ExtremePro/Downloads/Miniconda3-4.7.12.1-Linux-x86_64.sh'
+ 1694  source ~/.bashrc
+ 1695  conda deactivate
+ 1696  conda env create -f '/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1697  cd catkin_noetic_ws/
+ 1698  history > anaconda_config_history.txt
+ 1699  conda install anaconda-clean
+ 1700  conda activate
+ 1701  anaconda-clean --yes
+ 1702  sudo rm -rf ~/miniconda3/
+ 1703  conda deactivate
+ 1704  sudo nano ~/.bashrc
+ 1705  source ~/.bashrc
+ 1706  '/media/wen-chung/ExtremePro/Downloads/Miniconda3-latest-Linux-x86_64.sh' 
+ 1707  source ~/.bashrc
+ 1708  conda deactivate
+ 1709  conda env create --prefix '/media/wen-chung/ExtremePro/miniconda3_envs/TBMLTesting' -f '/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1710  conda install anaconda-clean
+ 1711  conda activate
+ 1712  anaconda-clean --yes
+ 1713  conda deactivate
+ 1714  rm -rf ~/miniconda3/
+ 1715  '/media/wen-chung/ExtremePro/Downloads/Miniconda3-latest-Linux-x86_64.sh'
+ 1716  nano ~/.bashrc
+ 1717  source ~/.bashrc
+ 1718  '/media/wen-chung/ExtremePro/Downloads/Miniconda3-latest-Linux-x86_64.sh'
+ 1719  conda env create -f '/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1720  source ~/.bashrc
+ 1721  conda deactivate
+ 1722  conda install anaconda-clean
+ 1723  conda activate
+ 1724  anaconda-clean --yes
+ 1725  conda deactivate
+ 1726  rm -rf ~/miniconda3/
+ 1727  sudo nano ~/.bashrc
+ 1728  source ~/.bashrc
+ 1729  '/media/wen-chung/ExtremePro/Downloads/Miniconda3-3.5.5-Linux-x86_64.sh'
+ 1730  source ~/.bashrc
+ 1731  sudo nano ~/.bashrc
+ 1732  source ~/.bashrc
+ 1733  conda env create -f '/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1734  sudo nano ~/.bashrc
+ 1735  conda env create -f '/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1736  conda
+ 1737  conda env create --name TBMLTesting --file='/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1738  conda-env create --name TBMLTesting --file='/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1739  conda create --name TBMLTesting --file='/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1740  conda env create --name TBMLTesting --file='/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1741  conda activate
+ 1742  conda list
+ 1743  conda install anaconda-clean
+ 1744  anaconda-clean --yes
+ 1745  rm -rf ~/miniconda3/
+ 1746  sudo nano ~/.bashrc
+ 1747  source ~/.bashrc
+ 1748  '/media/wen-chung/ExtremePro/Downloads/Miniconda3-4.7.12.1-Linux-x86_64.sh'
+ 1749  source ~/.bashrc
+ 1750  conda deactivate
+ 1751  conda env create -f '/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1752  conda deactivate
+ 1753  conda activate askjdas
+ 1754  conda info --envs
+ 1755  conda install anaconda-clean
+ 1756  conda activate
+ 1757  anaconda-clean --yes
+ 1758  conda deactivate
+ 1759  rm -rf miniconda3/
+ 1760  sudo nano ~/.bashrc
+ 1761  source ~/.bashrc
+ 1762  '/media/wen-chung/ExtremePro/Downloads/Miniconda3-latest-Linux-x86_64.sh'
+ 1763  source ~/.basrh
+ 1764  source ~/.bashrc
+ 1765  conda deactivate
+ 1766  conda env create -f '/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1767  conda activate TMBLTesting
+ 1768  conda info --envs
+ 1769  conda info --envs TBMLTesting
+ 1770  conda activate TBMLTesting
+ 1771  pip install torch
+ 1772  ./launch.sh train ppo
+ 1773  cd catkin_noetic_ws/
+ 1774  cd src/
+ 1775  cd Autonav-RL-Gym/
+ 1776  ls -al
+ 1777  ./launch.sh train ppo
+ 1778  pip install rospkg yaml
+ 1779  pip install pyyaml
+ 1780  pip install rospkg
+ 1781  ./launch.sh train ppo
+ 1782  pip install defusedxml numpy
+ 1783  ./launch.sh train ppo
+ 1784  pip install pyqtgraph
+ 1785  ./launch.sh train ppo
+ 1786  pip install PyQt6
+ 1787  ./launch.sh train ppo
+ 1788  pip install PyQt5
+ 1789  ./launch.sh train ppo
+ 1790  conda deactivate
+ 1791  conda install anaconda-clean
+ 1792  conda activate
+ 1793  anaconda-clean --yes
+ 1794  conda deactivate
+ 1795  rm -rf ~/miniconda3/
+ 1796  sudo nano ~/.bashrc
+ 1797  conda deactivate
+ 1798  roscore
+ 1799  conda activate TBMLTesting
+ 1800  roscore
+ 1801  ping 192.168.1.5
+ 1802  roscore
+ 1803  history > roscore_stuff.txt
+ 1804  conda deactivte
+ 1805  conda deactivate
+ 1806  hostname -I
+ 1807  nmap -sP 192.168.1.0/24
+ 1808  history > nmap_stuff.txt
+ 1809  ssh pi@192.168.1.3
+ 1810  ssh pi@192.168.1.4
+ 1811  ssh pi@192.168.1.5
+ 1812  history > remote_robot_thing.txt
+ 1813  rostopic list
+ 1814  rostopic echo /cmd_vel_l
+ 1815  rostopic echo /cmd_vel_r
+ 1816  rostopic info /cmd_vel_r
+ 1817  rostopic info /cmd_vel_l
+ 1818  rostopic info /cmd_vel
+ 1819  rostopic list
+ 1820  rosclean purge
+ 1821  conda deactivate
+ 1822  conda activate TBMLTesting
+ 1823  python /home/wen-chung/catkin_noetic_ws/PlotMathFunc.py
+ 1824  history > plotting_stuff.txt
+ 1825  conda
+ 1826  cd catkin_noetic_ws/
+ 1827  cd src/
+ 1828  cd Autonav-RL-Gym/
+ 1829  '/home/wen-chung/Downloads/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh'
+ 1830  source ~/.bashrc
+ 1831  conda deactivate
+ 1832  conda env create -f '/home/wen-chung/catkin_noetic_ws/TBMLTesting.yml'
+ 1833  conda activate TBMLTesting
+ 1834  ./launch.sh train ppo
+ 1835  pip install rospkg pyyaml
+ 1836  ./launch.sh train ppo
+ 1837  pip install defusedxml numpy
+ 1838  ./launch.sh train ppo
+ 1839  pip install pyqtgraph torch
+ 1840  ./launch.sh train ppo
+ 1841  pip install PyQt5
+ 1842  ./launch.sh train ppo
+ 1843  conda clean --all
+ 1844  conda clean --dry-run --all
+ 1845  ./launch.sh train dqn
+ 1846  rosclean check
+ 1847  rosclean purge
+ 1848  ./launch.sh train dqn
+ 1849  rosclean
+ 1850  rosclean check
+ 1851  rosclean purge
+ 1852  ./launch.sh train dqn
+ 1853  ./launch.sh test ppo
+ 1854  ./launch.sh test ppo 1
+ 1855  ./launch.sh test ppo 0 1
+ 1856  ./launch.sh test ppo 0 23049
+ 1857  ./launch.sh test ppo 0 1
+ 1858  ./launch.sh test ppo 0 1 real
+ 1859  chmod +x /home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/run_agent_real.py
+ 1860  ./launch.sh test ppo 0 1 real
+ 1861  export TURTLEBOT3_MODEL=burger
+ 1862  chmod +x /home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/env/training_environment_real.py /home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/env/testing_environment_real.py
+ 1863  ./launch.sh test ppo 0 1 real
+ 1864  chmod +x /home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/ppo_alg_real.py
+ 1865  ./launch.sh test ppo 0 1 real
+ 1866  ./launch.sh train dqn
+ 1867  ./launch.sh test ppo 0 1 real
+ 1868  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1869  ./launch.sh test ppo 0 1 real
+ 1870  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1871  ./launch.sh test ppo 0 1 real
+ 1872  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1873  ./launch.sh test ppo 0 1 real
+ 1874  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1875  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_steps_goal_better_goal_rate.launch
+ 1876  roslaunch turtlebot3_gazebo turtlebot3_stage_2_accum_64steps_clear_all_enabled_no_obstacle_real.launch
+ 1877  ./launch.sh train ppo -1 1 real
+ 1878  ./launch.sh train ppo -1 1
+ 1879  ./launch.sh train ppo -1
+ 1880  ./launch.sh train ppo -100
+ 1881  ./launch.sh train ppo -100 1
+ 1882  ./launch.sh test ppo 0 1 real
+ 1883  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1884  ./launch.sh test ppo 0 1 real
+ 1885  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1886  ./launch.sh test ppo 0 1 real
+ 1887  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1888  ./launch.sh test ppo 0 1 real
+ 1889  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1890  ./launch.sh test ppo 0 1 real
+ 1891  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1892  ./launch.sh test ppo 0 1 real
+ 1893  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1894  ./launch.sh test ppo 0 1 real
+ 1895  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1896  ./launch.sh test ppo 0 1 real
+ 1897  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1898  ./launch.sh test ppo 0 1 real
+ 1899  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1900  ./launch.sh test ppo 0 1 real
+ 1901  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1902  ./launch.sh test ppo 0 1 real
+ 1903  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1904  ./launch.sh test ppo 0 1 real
+ 1905  ./launch.sh train ppo -100 1
+ 1906  ./launch.sh test ppo 0 1 real
+ 1907  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1908  ./launch.sh test ppo 0 1 real
+ 1909  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1910  ./launch.sh test ppo 0 1 real
+ 1911  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1912  ./launch.sh test ppo 0 1 real
+ 1913  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1914  ./launch.sh test ppo 0 1 real
+ 1915  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1916  ./launch.sh test ppo 0 1 real
+ 1917  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1918  ./launch.sh test ppo 0 1 real
+ 1919  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1920  ./launch.sh test ppo 0 1 real
+ 1921  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1922  ./launch.sh test ppo 0 1 real
+ 1923  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1924  ./launch.sh train ppo -100 1
+ 1925  ./launch.sh test ppo 0 1 real
+ 1926  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1927  ./launch.sh test ppo 0 1 real
+ 1928  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1929  ./launch.sh test ppo 0 1 real
+ 1930  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1931  ./launch.sh test ppo 0 1 real
+ 1932  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1933  ./launch.sh test ppo 0 1 real
+ 1934  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1935  ./launch.sh test ppo 0 1 real
+ 1936  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1937  ./launch.sh test ppo 0 1 real
+ 1938  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1939  ./launch.sh test ppo 0 1 real
+ 1940  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1941  ./launch.sh test ppo 0 1 real
+ 1942  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1943  ./launch.sh test ppo 0 1 real
+ 1944  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1945  ./launch.sh test ppo 0 1 real
+ 1946  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1947  ./launch.sh test ppo 0 1 real
+ 1948  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1949  ./launch.sh test ppo 0 1 real
+ 1950  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1951  ./launch.sh test ppo 0 1 real
+ 1952  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1953  ./launch.sh test ppo 0 1 real
+ 1954  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1955  ./launch.sh test ppo 0 1 real
+ 1956  roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ 1957  ./launch.sh test ppo 0 1 real
+ 1958  ./launch.sh train ppo -1 1
+ 1959  ./launch.sh train ppo -100 1
+ 1960  ./launch.sh train ppo -100
+ 1961  ./launch.sh train ppo -100 1
+ 1962  ./launch.sh train ppo -100
+ 1963  rosclean check
+ 1964  rosclean purge
+ 1965  ./launch.sh train ppo -100
+ 1966  rosclean check
+ 1967  rosclean purge
+ 1968  ./launch.sh train ppo -100
+ 1969  rosclean check
+ 1970  rosclean purge
+ 1971  ./launch.sh train ppo -100
+ 1972  python /home/wen-chung/catkin_noetic_ws/PlotMathFunc.py
+ 1973  python3 /home/wen-chung/catkin_noetic_ws/PlotMathFunc.py
+ 1974  python2 /home/wen-chung/catkin_noetic_ws/PlotMathFunc.py
+ 1975  pip install matplotlib
+ 1976  python /home/wen-chung/catkin_noetic_ws/PlotMathFunc.py
+ 1977  rosclean purge
+ 1978  ./launch.sh train ppo -100
+ 1979  rosclean purge
+ 1980  ./launch.sh train ppo -100
+ 1981  python /home/wen-chung/catkin_noetic_ws/PlotMathFunc.py
+ 1982  ./launch.sh train ppo -100
+ 1983  python /home/wen-chung/catkin_noetic_ws/PlotMathFunc.py
+ 1984  ./launch.sh train ppo -100
+ 1985  python /home/wen-chung/catkin_noetic_ws/PlotMathFunc.py
+ 1986  ./launch.sh train ppo -100
+ 1987  rosclean purge
+ 1988  ./launch.sh train ppo -100
+ 1989  rosclean check
+ 1990  rosclean purge
+ 1991  ./launch.sh train ppo -100
+ 1992  rosclean purge
+ 1993  ./launch.sh train ppo -100 1
+ 1994  ./launch.sh train ppo -100   3
+ 1995  ./launch.sh train ppo -100 sim 2
+ 1996  df -h
+ 1997  history > train_test.txt
+ 1998  conda deactivate
+ 1999  conda activate sd
+ 2000  conda info --envs
+ 2001  conda activate TBMLTesting
+ 2002  roscore
+ 2003  rosclean check
+ 2004  roscore
+ 2005  rosclean check
+ 2006  roscore
+ 2007  rosclean check
+ 2008  roscore
+ 2009  rosclean check
+ 2010  rosclean purge
+ 2011  roscore
+ 2012  rosclean check
+ 2013  roscore
+ 2014  rosclean check
+ 2015  rosclean purge
+ 2016  roscore
+ 2017  rosclean check
+ 2018  roscore
+ 2019  rosclean check
+ 2020  rosclean purge
+ 2021  roscore
+ 2022  rosclean check
+ 2023  rosclean purge
+ 2024  roscore
+ 2025  ls -al
+ 2026  history > roscore_stuff_1.txt

@@ -39,7 +39,7 @@ class Moving():
                             self.pub_model.publish(gate)
                             try:
                                 rospy.sleep(GATE_WAIT_TIME)
-                            except rospy.exceptions.ROSTimeMovedBackwardsException, e:
+                            except rospy.exceptions.ROSTimeMovedBackwardsException as e:
                                 print("Ros error due to reset during sleep, disregard")
                             continue
 
@@ -51,17 +51,17 @@ class Moving():
                             self.pub_model.publish(gate)
                             try:
                                 rospy.sleep(GATE_WAIT_TIME)
-                            except rospy.exceptions.ROSTimeMovedBackwardsException, e:
+                            except rospy.exceptions.ROSTimeMovedBackwardsException as e:
                                 print("Ros error due to reset during sleep, disregard")
                             continue
 
-                        
+
                         self.pub_model.publish(gate)
                         try:
                             rospy.sleep(0.1)
-                        except rospy.exceptions.ROSTimeMovedBackwardsException, e:
+                        except rospy.exceptions.ROSTimeMovedBackwardsException as e:
                             print("Ros error due to reset during sleep, disregard")
-                
+
 
 
 def main():

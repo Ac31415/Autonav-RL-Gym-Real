@@ -11,11 +11,15 @@
     <arg name="gui" value="true"/>
     <arg name="headless" value="false"/>
     <arg name="debug" value="false"/>
-  </include>  
+  </include>
 
 
-  <param name="robot_description" command="$(find xacro)/xacro.py $(find project)/env_models/modified_turtlebot3_description/turtlebot3_burger_$(arg drive_type)drive.urdf.xacro" />
+  <!-- <param name="robot_description" command="$(find xacro)/xacro.py $(find project)/env_models/modified_turtlebot3_description/turtlebot3_burger_$(arg drive_type)drive.urdf.xacro" /> -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find project)/env_models/modified_turtlebot3_description/turtlebot3_burger_$(arg drive_type)drive.urdf.xacro" />
 
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model turtlebot3_burger -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+
+  <node pkg="project"  type="moving_obst_round_nav.py" name="moving_obstacle_round" output="screen" />
+	<node pkg="project"  type="moving_obst_gate_nav.py" name="moving_obstacle_gate" output="screen" />
 
 </launch>
