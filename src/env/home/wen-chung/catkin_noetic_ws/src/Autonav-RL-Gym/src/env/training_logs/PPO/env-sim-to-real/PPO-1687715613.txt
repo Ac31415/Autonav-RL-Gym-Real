@@ -1,2 +1,0 @@
-{"ep_number": 1, "environment": "sim_to_real", "reward_for_ep": -1160.7471024828778, "steps": 37, "collision_count": true, "goal_count": false}
-{"ep_number": 3, "environment": "sim_to_real", "reward_for_ep": -1392.008746831236, "steps": 192, "collision_count": true, "goal_count": false}

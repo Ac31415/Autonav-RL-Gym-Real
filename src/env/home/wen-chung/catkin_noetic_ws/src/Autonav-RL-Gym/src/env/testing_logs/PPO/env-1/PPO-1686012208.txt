@@ -1,1 +1,0 @@
-{"ep_number": 1, "environment": "empty", "reward_for_ep": -992.0, "steps": 92, "collision_count": 1, "goal_count": 0}

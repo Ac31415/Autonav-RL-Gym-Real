@@ -1,3 +1,0 @@
-{"ep_number": 1, "environment": "empty", "reward_for_ep": -1460.0, "steps": 93, "collision_count": true, "goal_count": false}
-{"ep_number": 3, "environment": "empty", "reward_for_ep": -2215.0, "steps": 244, "collision_count": true, "goal_count": false}
-{"ep_number": 5, "environment": "empty", "reward_for_ep": -3450.0, "steps": 491, "collision_count": true, "goal_count": false}
