@@ -240,7 +240,14 @@ if __name__ == '__main__':
 
         for step in range(MAX_STEPS):
             ep_steps += 1
-            state, reward, collision, goal = agent.step(state,ep)
+            # state, reward, collision, goal = agent.step(state,ep)
+
+
+            state, reward, collision, goal, scan_range, heading, current_distance, robot_pos, goal_pos = agent.step(state,ep)
+            env.logExpertData(scan_range, heading, current_distance, robot_pos, goal_pos)
+            env.DispEpisodeCSVExpertData(scan_range, heading, current_distance, robot_pos, goal_pos)
+
+
             running_reward += reward
             if (collision or goal or step == MAX_STEPS - 1):
                 break

@@ -1,0 +1,430 @@
+#!/usr/bin/env python
+#################################################################################
+# Copyright 2018 ROBOTIS CO., LTD.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#################################################################################
+
+import rospy
+import pyqtgraph as pg
+import sys
+import pickle
+from std_msgs.msg import Float32MultiArray, Float32
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+
+from PyQt5.QtWidgets import QApplication, QMainWindow
+
+# from PyQt6.QtGui import *
+# from PyQt6.QtCore import *
+#
+# from PyQt6.QtWidgets import QApplication, QMainWindow
+
+import csv
+import os
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+#from pathlib import Path
+
+class Window(QMainWindow):
+    def __init__(self):
+        super(Window, self).__init__()
+        self.setWindowTitle("Reward Result")
+        self.setGeometry(50, 50, 600, 650)
+        self.graph_sub = rospy.Subscriber('result_ExpertData', Float32MultiArray, self.data)
+        self.ep = []
+        # self.data = []
+        self.scan_ranges = []
+        self.headings = []
+        self.current_distances = []
+        self.robot_pos_xs = []
+        self.robot_pos_ys = []
+        self.goal_pos_xs = []
+        self.goal_pos_ys = []
+        self.env_indices = []
+        self.x = []
+        self.count = 1
+        self.size_ep = 0
+
+        self.CSVSavePath = os.path.dirname(os.path.realpath(__file__))
+        # self.CSVSavePath = self.CSVSavePath.replace('src/turtlebot3_machine_learning/turtlebot3_dqn/nodes', 'turtlebot3_dqn_results_data/CSV_Stage_2/')
+
+        if (sys.argv[1] == "train"):
+
+            if sys.argv[3] == "real":
+                self.dirPath = 'src/env/{}ing_logs_ExpertData/{}/env-{}/'.format(sys.argv[1], sys.argv[2], sys.argv[3])
+
+            else:
+                if int(sys.argv[3]) == -100:
+                    self.dirPath = 'src/env/{}ing_logs_ExpertData/{}/env-{}/'.format(sys.argv[1], sys.argv[2], 'sim-to-real')
+                else:
+                    self.dirPath = 'src/env/{}ing_logs_ExpertData/{}/env-{}/'.format(sys.argv[1], sys.argv[2], sys.argv[3])
+
+            # if int(sys.argv[3]) == -100:
+            #     self.dirPath = 'src/env/{}ing_logs/{}/env-{}/'.format(sys.argv[1], sys.argv[2], 'sim-to-real')
+            # else:
+            #     self.dirPath = 'src/env/{}ing_logs/{}/env-{}/'.format(sys.argv[1], sys.argv[2], sys.argv[3])
+
+        else:
+            self.dirPath = 'src/env/{}ing_logs_ExpertData/{}/'.format(sys.argv[1], sys.argv[2])
+
+        self.CSVSavePath = self.CSVSavePath.replace('src/util', self.dirPath)
+    	#self.CSVSavePath = self.CSVSavePath.replace('src/turtlebot3_machine_learning/turtlebot3_dqn/nodes', 'CSV_Stage_1/')
+    	#os.makedirs(self.CSVSavePath, exist_ok=True)
+
+        try:
+            os.makedirs(self.CSVSavePath)
+        except OSError as e:
+            #print("CSV Directory exists")
+            pass
+
+        #load_data = False
+        load_data = True
+
+        if load_data:
+
+            # self.ep, self.data, self.stepsGoals, self.AvestepsGoals = self.load_data()
+            # self.ep, self.rewards, self.env_indices, self.current_times, self.GoalRates, self.numGoals = self.load_data()
+
+            if (sys.argv[1] == "train"):
+
+                if sys.argv[3] == "real":
+                    self.ep, self.scan_ranges, self.headings, self.current_distances, self.robot_pos_xs, self.robot_pos_ys, self.goal_pos_xs, self.goal_pos_ys = self.load_data()
+
+                else:
+                    self.ep, self.scan_ranges, self.env_indices, self.headings, self.current_distances, self.robot_pos_xs, self.robot_pos_ys, self.goal_pos_xs, self.goal_pos_ys = self.load_data()
+
+            else:
+                self.ep, self.scan_ranges, self.headings, self.current_distances, self.robot_pos_xs, self.robot_pos_ys, self.goal_pos_xs, self.goal_pos_ys = self.load_data()
+
+            self.size_ep = len(self.ep)
+        self.plot()
+
+    def data(self, data):
+
+        if (sys.argv[1] == "train"):
+
+            if sys.argv[3] == "real":
+                self.scan_ranges.append(data.data[0])
+                self.ep.append(self.size_ep + self.count)
+                self.count += 1
+                self.headings.append(data.data[1])
+                self.current_distances.append(data.data[2])
+                self.robot_pos_xs.append(data.data[3])
+                self.robot_pos_ys.append(data.data[4])
+                self.goal_pos_xs.append(data.data[5])
+                self.goal_pos_ys.append(data.data[6])
+
+            else:
+                self.scan_ranges.append(data.data[0])
+                self.ep.append(self.size_ep + self.count)
+                self.count += 1
+                self.env_indices.append(data.data[1])
+                self.headings.append(data.data[2])
+                self.current_distances.append(data.data[3])
+                self.robot_pos_xs.append(data.data[4])
+                self.robot_pos_ys.append(data.data[5])
+                self.goal_pos_xs.append(data.data[6])
+                self.goal_pos_ys.append(data.data[7])
+
+        else:
+            self.scan_ranges.append(data.data[0])
+            self.ep.append(self.size_ep + self.count)
+            self.count += 1
+            self.headings.append(data.data[1])
+            self.current_distances.append(data.data[2])
+            self.robot_pos_xs.append(data.data[3])
+            self.robot_pos_ys.append(data.data[4])
+            self.goal_pos_xs.append(data.data[5])
+            self.goal_pos_ys.append(data.data[6])
+
+
+    def plot(self):
+
+        # # self.rewardsPlt = pg.PlotWidget(self, title="Rewards")
+        # # self.rewardsPlt.move(0, 640)
+        # # self.rewardsPlt.resize(600, 300)
+        # # self.timer1 = pg.QtCore.QTimer()
+        # # self.timer1.timeout.connect(self.update)
+        # # self.timer1.start(100)
+
+        # self.rewardsPlt = pg.PlotWidget(self, title="Rewards")
+        # self.rewardsPlt.move(0, 640)
+        # self.rewardsPlt.resize(600, 300)
+        # self.timer1 = pg.QtCore.QTimer()
+        # self.timer1.timeout.connect(self.update)
+        # self.timer1.start(200)
+
+        # self.GoalRatesPlt = pg.PlotWidget(self, title="Goal Rates")
+        # self.GoalRatesPlt.move(0, 320)
+        # self.GoalRatesPlt.resize(600, 300)
+        # self.timer2 = pg.QtCore.QTimer()
+        # self.timer2.timeout.connect(self.update)
+        # self.timer2.start(100)
+
+        # self.numGoalsPlt = pg.PlotWidget(self, title="Number of Goals")
+        # self.numGoalsPlt.move(0, 10)
+        # self.numGoalsPlt.resize(600, 300)
+        # self.timer3 = pg.QtCore.QTimer()
+        # self.timer3.timeout.connect(self.update)
+        # self.timer3.start(0)
+
+        # # self.AvestepsGoalsPlt = pg.PlotWidget(self, title="Average Steps to Goal")
+        # # self.AvestepsGoalsPlt.move(0, 320)
+        # # self.AvestepsGoalsPlt.resize(600, 300)
+        # # self.timer2 = pg.QtCore.QTimer()
+        # # self.timer2.timeout.connect(self.update)
+        # # self.timer2.start(0)
+
+        # self.show()
+
+        pass
+
+    def update(self):
+        # self.rewardsPlt.showGrid(x=True, y=True)
+        # self.GoalRatesPlt.showGrid(x=True, y=True)
+        # self.numGoalsPlt.showGrid(x=True, y=True)
+
+        # self.rewardsPlt.plot(self.ep, self.rewards, pen=(255, 0, 0))
+
+        fields = list(self.ep)
+
+        with open(self.CSVSavePath + "LiDAR_Data" +  ".csv", "w") as f:
+            # using csv.writer method from CSV package
+            write = csv.writer(f)
+
+            row = []
+            row.append("Steps")
+            row.append("LiDAR")
+            # row.append("Days")
+            # row.append("Hours")
+            # row.append("Minutes")
+            # row.append("Seconds")
+            write.writerow(row)
+
+            for i in range(len(fields)):
+                row = []
+                row.append(fields[i])
+                row.append(self.scan_ranges[i])
+                write.writerow(row)
+
+        if (sys.argv[1] == "train"):
+
+            if sys.argv[3] == "real":
+                self.save_data([self.ep, self.scan_ranges, self.headings, self.current_distances, self.robot_pos_xs, self.robot_pos_ys, self.goal_pos_xs, self.goal_pos_ys])
+
+            else:
+                self.save_data([self.ep, self.scan_ranges, self.env_indices, self.headings, self.current_distances, self.robot_pos_xs, self.robot_pos_ys, self.goal_pos_xs, self.goal_pos_ys])
+
+        else:
+            self.save_data([self.ep, self.scan_ranges, self.headings, self.current_distances, self.robot_pos_xs, self.robot_pos_ys, self.goal_pos_xs, self.goal_pos_ys])
+
+
+        # # self.AvestepsGoalsPlt.plot(self.ep, self.AvestepsGoals, pen=(0, 255, 0))
+        # self.GoalRatesPlt.plot(self.ep, self.GoalRates, pen=(255, 255, 0))
+        # self.numGoalsPlt.plot(self.ep, self.numGoals, pen=(255, 0, 255))
+
+        with open(self.CSVSavePath + "Headings" +  ".csv", "w") as f:
+            # using csv.writer method from CSV package
+            write = csv.writer(f)
+
+            row = []
+            row.append("Steps")
+            row.append("Headings")
+            # # row.append("Days")
+            # # row.append("Hours")
+            # # row.append("Minutes")
+            # # row.append("Seconds")
+            # row.append("Time Elapsed")
+            write.writerow(row)
+
+            for i in range(len(fields)):
+                row = []
+                row.append(fields[i])
+                row.append(self.headings[i])
+                # # row.append(self.Days[i])
+                # # row.append(self.Hours[i])
+                # # row.append(self.Minutes[i])
+                # # row.append(self.Seconds[i])
+                # row.append(str(int(self.Days[i])) + " " + str(int(self.Hours[i])) + ":" + str(int(self.Minutes[i])) + ":" + str(int(self.Seconds[i])))
+                write.writerow(row)
+
+        if (sys.argv[1] == "train"):
+
+            if sys.argv[3] == "real":
+                pass
+
+            else:
+                with open(self.CSVSavePath + "Env_IDs" +  ".csv", "w") as f:
+                    # using csv.writer method from CSV package
+                    write = csv.writer(f)
+
+                    row = []
+                    row.append("Episodes")
+                    row.append("Environment IDs")
+                    # row.append("Days")
+                    # row.append("Hours")
+                    # row.append("Minutes")
+                    # row.append("Seconds")
+                    write.writerow(row)
+
+                    for i in range(len(fields)):
+                        row = []
+                        row.append(fields[i])
+                        row.append(self.env_indices[i])
+                        write.writerow(row)
+
+        else:
+            pass
+
+        with open(self.CSVSavePath + "current_distances" +  ".csv", "w") as f:
+            # using csv.writer method from CSV package
+            write = csv.writer(f)
+
+            row = []
+            row.append("Steps")
+            row.append("Current Distances")
+            # row.append("Days")
+            # row.append("Hours")
+            # row.append("Minutes")
+            # row.append("Seconds")
+            write.writerow(row)
+
+            for i in range(len(fields)):
+                row = []
+                row.append(fields[i])
+                row.append(self.current_distances[i])
+                write.writerow(row)
+
+        with open(self.CSVSavePath + "Robot_X_Coordinates" +  ".csv", "w") as f:
+            # using csv.writer method from CSV package
+            write = csv.writer(f)
+
+            row = []
+            row.append("Steps")
+            row.append("Robot X Coordinates")
+            # row.append("Days")
+            # row.append("Hours")
+            # row.append("Minutes")
+            # row.append("Seconds")
+            write.writerow(row)
+
+            for i in range(len(fields)):
+                row = []
+                row.append(fields[i])
+                row.append(self.robot_pos_xs[i])
+                write.writerow(row)
+
+
+        with open(self.CSVSavePath + "Robot_Y_Coordinates" +  ".csv", "w") as f:
+            # using csv.writer method from CSV package
+            write = csv.writer(f)
+
+            row = []
+            row.append("Steps")
+            row.append("Robot Y Coordinates")
+            # row.append("Days")
+            # row.append("Hours")
+            # row.append("Minutes")
+            # row.append("Seconds")
+            write.writerow(row)
+
+            for i in range(len(fields)):
+                row = []
+                row.append(fields[i])
+                row.append(self.robot_pos_ys[i])
+                write.writerow(row)
+
+
+        with open(self.CSVSavePath + "Goal_X_Coordinates" +  ".csv", "w") as f:
+            # using csv.writer method from CSV package
+            write = csv.writer(f)
+
+            row = []
+            row.append("Steps")
+            row.append("Goal X Coordinates")
+            # row.append("Days")
+            # row.append("Hours")
+            # row.append("Minutes")
+            # row.append("Seconds")
+            write.writerow(row)
+
+            for i in range(len(fields)):
+                row = []
+                row.append(fields[i])
+                row.append(self.goal_pos_xs[i])
+                write.writerow(row)
+
+
+        with open(self.CSVSavePath + "Goal_Y_Coordinates" +  ".csv", "w") as f:
+            # using csv.writer method from CSV package
+            write = csv.writer(f)
+
+            row = []
+            row.append("Steps")
+            row.append("Goal Y Coordinates")
+            # row.append("Days")
+            # row.append("Hours")
+            # row.append("Minutes")
+            # row.append("Seconds")
+            write.writerow(row)
+
+            for i in range(len(fields)):
+                row = []
+                row.append(fields[i])
+                row.append(self.goal_pos_ys[i])
+                write.writerow(row)
+
+    def load_data(self):
+
+        if (sys.argv[1] == "train"):
+
+            if sys.argv[3] == "real":
+
+                # with open(self.CSVSavePath + "rewards_graph.txt", "rb") as f:
+                #     x, y, z, a, b = pickle.load(f)
+
+                try:
+                    with open(self.CSVSavePath + "expert_data.txt", "rb") as f:
+                        x, y, z, a, b, c, d, e = pickle.load(f)
+                except:
+                    x, y, z, a, b, c, d, e = [], [], [], [], [], [], [], []
+                return x, y, z, a, b, c, d, e
+
+            else:
+                try:
+                    with open(self.CSVSavePath + "expert_data.txt", "rb") as f:
+                        x, y, z, a, b, c, d, e, F = pickle.load(f)
+                except:
+                    x, y, z, a, b, c, d, e, F = [], [], [], [], [], [], [], [], []
+                return x, y, z, a, b, c, d, e, F
+
+        else:
+            try:
+                with open(self.CSVSavePath + "expert_data.txt", "rb") as f:
+                    x, y, z, a, b, c, d, e = pickle.load(f)
+            except:
+                x, y, z, a, b, c, d, e = [], [], [], [], [], [], [], []
+            return x, y, z, a, b, c, d, e
+
+    def save_data(self, data):
+        with open(self.CSVSavePath + "expert_data.txt", "wb") as f:
+            pickle.dump(data, f)
+
+
+def run():
+        rospy.init_node('result_graph_Autonav_RL_Gym_expert_data')
+        app = QApplication(sys.argv)
+        GUI = Window()
+        sys.exit(app.exec_())
+
+run()

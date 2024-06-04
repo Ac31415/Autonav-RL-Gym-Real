@@ -63,7 +63,11 @@ class PPO_agent:
         self.time_step += 1
         action = self.ppo.select_action(state, self.memory)
         # print("action: ", action)
-        state, reward, collision, goal = self.env.step(action, self.past_action)
+
+        # state, reward, collision, goal = self.env.step(action, self.past_action)
+
+        state, reward, collision, goal, scan_range, heading, current_distance, robot_pos, goal_pos = self.env.step(action, self.past_action)
+
         # print("state: ", state)
 
         self.past_action = action
@@ -75,7 +79,7 @@ class PPO_agent:
             self.memory.clear_memory()
             self.time_step = 0
 
-        return state, reward, collision, goal
+        return state, reward, collision, goal, scan_range, heading, current_distance, robot_pos, goal_pos
 
     def save(self, ep):
         # self.ppo.save_models(ep)
