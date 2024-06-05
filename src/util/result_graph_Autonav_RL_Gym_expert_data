@@ -111,41 +111,55 @@ class Window(QMainWindow):
 
     def data(self, data):
 
+        incoming_LiDAR = []
+
         if (sys.argv[1] == "train"):
 
             if sys.argv[3] == "real":
-                self.scan_ranges.append(data.data[0])
+                for i in range(360):
+                    incoming_LiDAR.append(data.data[i])
+
+                self.scan_ranges.append(incoming_LiDAR)
+                
                 self.ep.append(self.size_ep + self.count)
                 self.count += 1
-                self.headings.append(data.data[1])
-                self.current_distances.append(data.data[2])
-                self.robot_pos_xs.append(data.data[3])
-                self.robot_pos_ys.append(data.data[4])
-                self.goal_pos_xs.append(data.data[5])
-                self.goal_pos_ys.append(data.data[6])
+                self.headings.append(data.data[366])
+                self.current_distances.append(data.data[367])
+                self.robot_pos_xs.append(data.data[368])
+                self.robot_pos_ys.append(data.data[369])
+                self.goal_pos_xs.append(data.data[370])
+                self.goal_pos_ys.append(data.data[371])
 
             else:
-                self.scan_ranges.append(data.data[0])
+                for i in range(360):
+                    incoming_LiDAR.append(data.data[i])
+
+                self.scan_ranges.append(incoming_LiDAR)
+
                 self.ep.append(self.size_ep + self.count)
                 self.count += 1
-                self.env_indices.append(data.data[1])
-                self.headings.append(data.data[2])
-                self.current_distances.append(data.data[3])
-                self.robot_pos_xs.append(data.data[4])
-                self.robot_pos_ys.append(data.data[5])
-                self.goal_pos_xs.append(data.data[6])
-                self.goal_pos_ys.append(data.data[7])
+                self.env_indices.append(data.data[366])
+                self.headings.append(data.data[367])
+                self.current_distances.append(data.data[368])
+                self.robot_pos_xs.append(data.data[369])
+                self.robot_pos_ys.append(data.data[370])
+                self.goal_pos_xs.append(data.data[371])
+                self.goal_pos_ys.append(data.data[372])
 
         else:
-            self.scan_ranges.append(data.data[0])
+            for i in range(360):
+                incoming_LiDAR.append(data.data[i])
+
+            self.scan_ranges.append(incoming_LiDAR)
+
             self.ep.append(self.size_ep + self.count)
             self.count += 1
-            self.headings.append(data.data[1])
-            self.current_distances.append(data.data[2])
-            self.robot_pos_xs.append(data.data[3])
-            self.robot_pos_ys.append(data.data[4])
-            self.goal_pos_xs.append(data.data[5])
-            self.goal_pos_ys.append(data.data[6])
+            self.headings.append(data.data[366])
+            self.current_distances.append(data.data[367])
+            self.robot_pos_xs.append(data.data[368])
+            self.robot_pos_ys.append(data.data[369])
+            self.goal_pos_xs.append(data.data[370])
+            self.goal_pos_ys.append(data.data[371])
 
 
     def plot(self):
@@ -204,7 +218,9 @@ class Window(QMainWindow):
 
             row = []
             row.append("Steps")
-            row.append("LiDAR")
+            for i in range(len(self.scan_ranges[0])):
+                row.append("LiDAR " + str(i))
+            # row.append("LiDAR")
             # row.append("Days")
             # row.append("Hours")
             # row.append("Minutes")
@@ -214,7 +230,9 @@ class Window(QMainWindow):
             for i in range(len(fields)):
                 row = []
                 row.append(fields[i])
-                row.append(self.scan_ranges[i])
+                for j in range(len(self.scan_ranges[i])):
+                    row.append(self.scan_ranges[i][j])
+                # row.append(self.scan_ranges[i])
                 write.writerow(row)
 
         if (sys.argv[1] == "train"):

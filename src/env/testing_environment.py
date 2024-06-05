@@ -115,11 +115,42 @@ class Env():
 
         self.heading = round(heading, 3)
 
+    # def getState(self, scan, past_action):
+    #     scan_range = []
+    #     heading = self.heading
+    #     min_range = 0.16
+    #     done = 0
+
+    #     for i in range(len(scan.ranges)):
+    #         if scan.ranges[i] == float('Inf'):
+    #             scan_range.append(3.5)
+    #         elif np.isnan(scan.ranges[i]):
+    #             scan_range.append(0)
+    #         else:
+    #             scan_range.append(scan.ranges[i])
+	#     #print(scan_range[i])
+
+
+    #     if min_range > min(scan_range) > 0:
+    #         done = 1
+
+    #     for pa in past_action:
+    #         scan_range.append(pa)
+
+    #     current_distance = round(math.hypot(self.goal_x - self.position.x, self.goal_y - self.position.y),2)
+    #     if current_distance < 0.2:
+    #         self.get_goalbox = True
+    #     #print("Heading = " + str(heading))
+    #     return scan_range + [heading, current_distance], done
+    
+
     def getState(self, scan, past_action):
         scan_range = []
         heading = self.heading
-        min_range = 0.16
-        done = 0
+        # min_range = 0.16
+        min_range = 0.13
+        done = False
+        # print(scan)
 
         for i in range(len(scan.ranges)):
             if scan.ranges[i] == float('Inf'):
@@ -128,20 +159,50 @@ class Env():
                 scan_range.append(0)
             else:
                 scan_range.append(scan.ranges[i])
-	    #print(scan_range[i])
+	    # print(scan_range[i])
 
+
+        # scan_range_filtered = []
+        #
+        # for item in scan_range:
+        #     if item != 0:
+        #         scan_range_filtered.append(item)
+
+
+        # obstacle_min_range = round(min(scan_range_filtered), 2)
+        # obstacle_angle = np.argmin(scan_range_filtered)
+        obstacle_min_range = round(min(scan_range), 2)
+        obstacle_angle = np.argmin(scan_range)
+
+
+        # if min_range > min(scan_range_filtered) > 0:
+        #     done = 1
 
         if min_range > min(scan_range) > 0:
-            done = 1
+            done = True
 
         for pa in past_action:
             scan_range.append(pa)
 
-        current_distance = round(math.hypot(self.goal_x - self.position.x, self.goal_y - self.position.y),2)
+        current_distance = round(math.hypot(
+            self.goal_x - self.position.x, self.goal_y - self.position.y), 2)
+
+        # print("Current distance to goal = " + str(current_distance))
+        #
+        # print("goal pos = " + "x: " + str(self.goal_x) + " y: " + str(self.goal_y))
+        # print("robot pos = " + "x: " + str(self.position.x) + " y: " + str(self.position.y))
+
         if current_distance < 0.2:
             self.get_goalbox = True
-        #print("Heading = " + str(heading))
-        return scan_range + [heading, current_distance], done
+            # print("Heading = " + str(heading))
+
+        # if current_distance < 0.1:
+        #     self.get_goalbox = True
+        #     # print("Heading = " + str(heading))
+        # return scan_range + [heading, current_distance], done
+        # print("obstacle distance = " + str(obstacle_min_range))
+        # print("obstacle heading = " + str(obstacle_angle))
+        return scan_range + [heading, current_distance, obstacle_min_range, obstacle_angle], done
 
     def getState_storeExpertData(self, scan, past_action):
         scan_range = []
@@ -372,7 +433,7 @@ class Env():
     	#print("past d = " + str(self.past_distance))
 
         # print(len(np.asarray(state)))
-        state = state + [0, 0]
+        # state = state + [0, 0]
 
         return np.asarray(state)
 
@@ -453,7 +514,8 @@ class Env():
         # else:
         #     self.result.data = [reward, self.respawn_goal.currentModuleIndex(), self.current_time, float("%.4f" % GoalRates[-1]), num_goals]
 
-        self.result_ExpertData.data = [scan_range, heading, current_distance, robot_pos[0], robot_pos[1], goal_pos[0], goal_pos[1]]
+        # self.result_ExpertData.data = [scan_range, heading, current_distance, robot_pos[0], robot_pos[1], goal_pos[0], goal_pos[1]]
+        self.result_ExpertData.data = scan_range + [heading, current_distance, robot_pos[0], robot_pos[1], goal_pos[0], goal_pos[1]]
 
 
         self.pub_result_ExpertData.publish(self.result_ExpertData)
