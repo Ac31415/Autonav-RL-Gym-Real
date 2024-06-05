@@ -1,0 +1,2 @@
+{"ep_number": 99, "environment": "empty", "reward_for_ep": -1240.0, "steps": 49, "collision_count": 1, "goal_count": 0}
+{"ep_number": 977, "environment": "empty", "reward_for_ep": -3185.0, "steps": 438, "collision_count": 1, "goal_count": 0}

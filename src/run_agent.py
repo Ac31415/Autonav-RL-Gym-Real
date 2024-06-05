@@ -88,9 +88,9 @@ if __name__ == '__main__':
             env_module_id = 'sim-to-real'
 
         if (sys.argv[1] == "train"):
-            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/saved_models/ppo/env-{}/'.format(env_module_id)
+            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym-Real/src/saved_models/ppo/env-{}/'.format(env_module_id)
         else:
-            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/saved_models/ppo/'
+            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym-Real/src/saved_models/ppo/'
 
 
         try:
@@ -100,6 +100,48 @@ if __name__ == '__main__':
             pass
 
         env = Env("PPO", env_module_id)
+
+
+
+        # # arg 4 set load ep if specified
+        # if len(sys.argv) < 6 + 2:
+        #     MAX_EPISODES = int(sys.argv[4])
+        #     load_ep = 0
+        # else:
+        #     MAX_EPISODES = int(sys.argv[4]) + 1
+        #     load_ep = int(sys.argv[5])
+        #     # print(load_ep)
+
+        #     # with open(dirPath + "goals.txt", "rb") as f:
+        #     #     # env.goals, env.GoalRates, env.steps_to_goals = pickle.load(f)
+        #     #     env.goals, env.GoalRates = pickle.load(f)
+        #     #
+        #     # # with open(dirPath + "steps_to_goals.txt", "rb") as f:
+        #     # #     env.average_steps_to_goal_per_episode_list = pickle.load(f)
+        #     #
+        #     # with open(dirPath + 'tot_num_goals.json') as outfile:
+        #     #     param = json.load(outfile)
+        #     #     # start_time = start_time - param.get('t_elapsed')
+        #     #     env.number_of_goals = param.get('tot_num_goals')
+
+        #     try:
+        #         with open(dirPath + "goals.txt", "rb") as f:
+        #             # env.goals, env.GoalRates, env.steps_to_goals = pickle.load(f)
+        #             env.goals, env.GoalRates = pickle.load(f)
+
+        #         # with open(dirPath + "steps_to_goals.txt", "rb") as f:
+        #         #     env.average_steps_to_goal_per_episode_list = pickle.load(f)
+
+        #         with open(dirPath + 'tot_num_goals.json') as outfile:
+        #             param = json.load(outfile)
+        #             # start_time = start_time - param.get('t_elapsed')
+        #             env.number_of_goals = param.get('tot_num_goals')
+
+        #     except:
+        #         # env.goals, env.GoalRates, env.steps_to_goals = [], [], []
+        #         # env.average_steps_to_goal_per_episode_list = []
+
+        #         env.goals, env.GoalRates = [], []
 
 
 
@@ -183,9 +225,9 @@ if __name__ == '__main__':
             env_module_id = 'sim-to-real'
 
         if (sys.argv[1] == "train"):
-            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/saved_models/dqn/env-{}/'.format(env_module_id)
+            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym-Real/src/saved_models/dqn/env-{}/'.format(env_module_id)
         else:
-            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/saved_models/dqn/'
+            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym-Real/src/saved_models/dqn/'
 
         # print(dirPath)
         #
@@ -245,7 +287,7 @@ if __name__ == '__main__':
 
             state, reward, collision, goal, scan_range, heading, current_distance, robot_pos, goal_pos = agent.step(state,ep)
             env.logExpertData(scan_range, heading, current_distance, robot_pos, goal_pos)
-            env.DispEpisodeCSVExpertData(scan_range, heading, current_distance, robot_pos, goal_pos)
+            env.DispEpisodeCSVExpertData(scan_range, heading, current_distance, robot_pos, goal_pos, ep)
 
 
             running_reward += reward

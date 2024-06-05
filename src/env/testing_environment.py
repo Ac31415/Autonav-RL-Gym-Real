@@ -53,7 +53,8 @@ class Env():
         self.reset_proxy = rospy.ServiceProxy('gazebo/reset_simulation', Empty)
         self.unpause_proxy = rospy.ServiceProxy('gazebo/unpause_physics', Empty)
         self.pause_proxy = rospy.ServiceProxy('gazebo/pause_physics', Empty)
-        self.respawn_goal = Respawn()
+        # self.respawn_goal = Respawn()
+        self.respawn_goal = Respawn(-1 if env_module_id is None else env_module_id)
         self.past_distance = 0.
         self.ep_number = 0
         self.log_file = ""
@@ -401,6 +402,43 @@ class Env():
 
         return np.asarray(state), reward, done, goal
 
+    # def reset(self):
+    #     rospy.wait_for_service('gazebo/reset_simulation')
+    #     try:
+    #         pass
+    #         self.reset_proxy()
+    #     except (rospy.ServiceException) as e:
+    #         print("gazebo/reset_simulation service call failed")
+    #     data = None
+
+    #     while data is None:
+    #         try:
+    #             data = rospy.wait_for_message('scan', LaserScan, timeout=5)
+    #         except:
+    #             print("scan failed")
+    #             pass
+
+
+    #     if self.initGoal:
+    #         self.goal_x, self.goal_y = self.respawn_goal.moduleRespawns(True)
+    #         self.initGoal = False
+    #     else:
+    #         self.goal_x, self.goal_y = self.respawn_goal.moduleRespawns(self.step_no >= 500 or self.goal_hit)
+
+    #     if(self.step_no >= 500):
+    #         self.step_no = 1
+    #     self.goal_distance = self.getGoalDistace()
+    #     state, done = self.getState(data, [0.,0.])
+    #     self.past_distance = state[-1]
+    # 	#print("resetted")
+    # 	#print("past d = " + str(self.past_distance))
+
+    #     # print(len(np.asarray(state)))
+    #     # state = state + [0, 0]
+
+    #     return np.asarray(state)
+
+
     def reset(self):
         rospy.wait_for_service('gazebo/reset_simulation')
         try:
@@ -417,23 +455,45 @@ class Env():
                 print("scan failed")
                 pass
 
+        # self.respawn_goal.deleteModel()
 
         if self.initGoal:
-            self.goal_x, self.goal_y = self.respawn_goal.moduleRespawns(True)
+            # self.goal_x, self.goal_y = self.respawn_goal.moduleRespawns(self.env_module_id is None)
+            # self.initGoal = False
+
+            self.goal_x, self.goal_y, self.position.x, self.position.y = self.respawn_goal.moduleRespawns(self.env_module_id is None)
+
+            # self.respawn_goal.deleteModel()
+            # time.sleep(0.5)
+            # self.respawn_goal.respawnGoal()
+
             self.initGoal = False
         else:
-            self.goal_x, self.goal_y = self.respawn_goal.moduleRespawns(self.step_no >= 500 or self.goal_hit)
+            # self.goal_x, self.goal_y = self.respawn_goal.moduleRespawns(
+            #     (self.step_no >= 200) and (self.env_module_id is None))
 
-        if(self.step_no >= 500):
+            self.goal_x, self.goal_y, self.position.x, self.position.y = self.respawn_goal.moduleRespawns(
+                (self.step_no >= 200) and (self.env_module_id is None))
+
+            # self.respawn_goal.deleteModel()
+            # time.sleep(0.5)
+            # self.respawn_goal.respawnGoal()
+
+        # self.respawn_goal.deleteModel()
+
+        self.respawn_goal.deleteModel()
+        time.sleep(0.5)
+        self.respawn_goal.respawnGoal()
+
+        print('Environment: {}'.format(self.respawn_goal.currentModuleName()))
+
+        if(self.step_no >= 200):
             self.step_no = 1
-        self.goal_distance = self.getGoalDistace()
+            self.goal_distance = self.getGoalDistace()
         state, done = self.getState(data, [0.,0.])
         self.past_distance = state[-1]
-    	#print("resetted")
-    	#print("past d = " + str(self.past_distance))
-
-        # print(len(np.asarray(state)))
-        # state = state + [0, 0]
+        # print("resetted")
+        # print("past d = " + str(self.past_distance))
 
         return np.asarray(state)
 
@@ -496,7 +556,7 @@ class Env():
         self.pub_result.publish(self.result)
 
 
-    def DispEpisodeCSVExpertData(self, scan_range, heading, current_distance, robot_pos, goal_pos):
+    def DispEpisodeCSVExpertData(self, scan_range, heading, current_distance, robot_pos, goal_pos, ep):
         self.ep_number = self.ep_number + 1
         log = {
             "ep_number": self.ep_number,
@@ -515,7 +575,7 @@ class Env():
         #     self.result.data = [reward, self.respawn_goal.currentModuleIndex(), self.current_time, float("%.4f" % GoalRates[-1]), num_goals]
 
         # self.result_ExpertData.data = [scan_range, heading, current_distance, robot_pos[0], robot_pos[1], goal_pos[0], goal_pos[1]]
-        self.result_ExpertData.data = scan_range + [heading, current_distance, robot_pos[0], robot_pos[1], goal_pos[0], goal_pos[1]]
+        self.result_ExpertData.data = scan_range + [heading, current_distance, robot_pos[0], robot_pos[1], goal_pos[0], goal_pos[1], ep]
 
 
         self.pub_result_ExpertData.publish(self.result_ExpertData)
