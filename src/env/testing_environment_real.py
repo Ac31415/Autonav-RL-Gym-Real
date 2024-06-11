@@ -1530,9 +1530,9 @@ class Env():
 
     def createLog(self):
 
-        # dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/env/{}ing_logs/{}/env-{}'.format(sys.argv[1], self.agent_type, self.env_module_id)
+        # dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym-Real/src/env/{}ing_logs/{}/env-{}'.format(sys.argv[1], self.agent_type, self.env_module_id)
 
-        dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/env/{}ing_logs/{}/'.format(sys.argv[1], self.agent_type)
+        dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym-Real/src/env/{}ing_logs/{}/'.format(sys.argv[1], self.agent_type)
 
         logpath = os.path.dirname(os.path.realpath(__file__)) + dirPath
 
@@ -1590,9 +1590,9 @@ class Env():
 
     def createLog_real(self):
 
-        # dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/env/{}ing_logs/{}/env-{}'.format(sys.argv[1], self.agent_type, self.env_module_id)
+        # dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym-Real/src/env/{}ing_logs/{}/env-{}'.format(sys.argv[1], self.agent_type, self.env_module_id)
 
-        dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/env/{}ing_logs/{}/'.format(sys.argv[1], self.agent_type)
+        dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym-Real/src/env/{}ing_logs/{}/'.format(sys.argv[1], self.agent_type)
 
         logpath = os.path.dirname(os.path.realpath(__file__)) + dirPath
 

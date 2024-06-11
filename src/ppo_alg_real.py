@@ -53,8 +53,8 @@ class PPO_agent:
 
             print(load_ep)
 
-            # self.ppo.load_models_latest(load_ep)
-            self.ppo.load_models_latest_combine(load_ep)
+            self.ppo.load_models_latest(load_ep)
+            # self.ppo.load_models_latest_combine(load_ep)
 
 
     # called every step

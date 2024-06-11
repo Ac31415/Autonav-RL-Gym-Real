@@ -58,23 +58,24 @@ class Window(QMainWindow):
         if (sys.argv[1] == "train"):
 
             if sys.argv[3] == "real":
-                self.dirPath = 'src/env/{}ing_logs/{}/env-{}/'.format(sys.argv[1], sys.argv[2], sys.argv[3])
+                self.dirPath = 'src/{}ing_logs/{}/env-{}/'.format(sys.argv[1], sys.argv[2], sys.argv[3])
 
             else:
                 if int(sys.argv[3]) == -100:
-                    self.dirPath = 'src/env/{}ing_logs/{}/env-{}/'.format(sys.argv[1], sys.argv[2], 'sim-to-real')
+                    self.dirPath = 'src/{}ing_logs/{}/env-{}/'.format(sys.argv[1], sys.argv[2], 'sim-to-real')
                 else:
-                    self.dirPath = 'src/env/{}ing_logs/{}/env-{}/'.format(sys.argv[1], sys.argv[2], sys.argv[3])
+                    self.dirPath = 'src/{}ing_logs/{}/env-{}/'.format(sys.argv[1], sys.argv[2], sys.argv[3])
 
             # if int(sys.argv[3]) == -100:
-            #     self.dirPath = 'src/env/{}ing_logs/{}/env-{}/'.format(sys.argv[1], sys.argv[2], 'sim-to-real')
+            #     self.dirPath = 'src/{}ing_logs/{}/env-{}/'.format(sys.argv[1], sys.argv[2], 'sim-to-real')
             # else:
-            #     self.dirPath = 'src/env/{}ing_logs/{}/env-{}/'.format(sys.argv[1], sys.argv[2], sys.argv[3])
+            #     self.dirPath = 'src/{}ing_logs/{}/env-{}/'.format(sys.argv[1], sys.argv[2], sys.argv[3])
 
         else:
-            self.dirPath = 'src/env/{}ing_logs/{}/'.format(sys.argv[1], sys.argv[2])
+            self.dirPath = 'src/{}ing_logs/{}/'.format(sys.argv[1], sys.argv[2])
 
         self.CSVSavePath = self.CSVSavePath.replace('src/util', self.dirPath)
+        print(self.CSVSavePath)
     	#self.CSVSavePath = self.CSVSavePath.replace('src/turtlebot3_machine_learning/turtlebot3_dqn/nodes', 'CSV_Stage_1/')
     	#os.makedirs(self.CSVSavePath, exist_ok=True)
 

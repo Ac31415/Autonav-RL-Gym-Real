@@ -131,9 +131,9 @@ if __name__ == '__main__':
     if (sys.argv[2] == "ppo"):
 
         if (sys.argv[1] == "train"):
-            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/saved_models/ppo/env-{}/'.format(env_module_id)
+            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym-Real/src/saved_models/ppo/env-{}/'.format(env_module_id)
         else:
-            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/saved_models/ppo/'
+            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym-Real/src/saved_models/ppo/'
 
 
         try:
@@ -188,9 +188,9 @@ if __name__ == '__main__':
     elif (sys.argv[2] == "ddpg"):
 
         if (sys.argv[1] == "train"):
-            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/saved_models/ddpg/env-{}/'.format(env_module_id)
+            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym-Real/src/saved_models/ddpg/env-{}/'.format(env_module_id)
         else:
-            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/saved_models/ddpg/'
+            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym-Real/src/saved_models/ddpg/'
 
         try:
             os.mkdir(dirPath)
@@ -233,9 +233,9 @@ if __name__ == '__main__':
     elif (sys.argv[2] == "dqn"):
 
         if (sys.argv[1] == "train"):
-            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/saved_models/dqn/env-{}/'.format(env_module_id)
+            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym-Real/src/saved_models/dqn/env-{}/'.format(env_module_id)
         else:
-            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/saved_models/dqn/'
+            dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym-Real/src/saved_models/dqn/'
 
         # print(dirPath)
         #

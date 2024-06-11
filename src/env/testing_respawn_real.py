@@ -43,7 +43,7 @@ class Respawn():
 
         # Get goal box model
         self.modelPath = os.path.dirname(os.path.realpath(__file__))
-        self.modelPath = self.modelPath.replace('Autonav-RL-Gym/src/env',
+        self.modelPath = self.modelPath.replace('Autonav-RL-Gym-Real/src/env',
                                                 'turtlebot3_simulations/turtlebot3_gazebo/models/turtlebot3_square/goal_box/model.sdf')
         # self.modelPath = '/home/act65/catkin_ws/src/turtlebot3_simulations/turtlebot3_gazebo/models/turtlebot3_square/goal_box/model.sdf'
         self.f = open(self.modelPath, 'r')
