@@ -87,5 +87,5 @@ class PPO_agent:
     def save(self, ep):
         # self.ppo.save_models(ep)
 
-        # self.ppo.save_models_latest(ep)
-        self.ppo.save_models_latest_combine(ep)
+        self.ppo.save_models_latest(ep)
+        # self.ppo.save_models_latest_combine(ep)
