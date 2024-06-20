@@ -66,6 +66,9 @@ class Env():
         self.pub_result = rospy.Publisher('result', Float32MultiArray, queue_size=5)
         self.result = Float32MultiArray()
 
+        self.pub_result_ExpertData = rospy.Publisher('result_ExpertData', Float32MultiArray, queue_size=5)
+        self.result_ExpertData = Float32MultiArray()
+
         self.goals = []
         self.GoalRates = []
         self.sum_of_goals = sum(self.goals)
@@ -73,6 +76,8 @@ class Env():
         self.number_of_goals = 0
 
         self.createLog()
+
+        self.createExpertLog()
 
         rospy.on_shutdown(self.shutdown)
 
@@ -172,6 +177,44 @@ class Env():
         # print("obstacle distance = " + str(obstacle_min_range))
         # print("obstacle heading = " + str(obstacle_angle))
         return scan_range + [heading, current_distance, obstacle_min_range, obstacle_angle], done
+
+
+    def getState_storeExpertData(self, scan, past_action):
+        scan_range = []
+        goal_pos = []
+        robot_pos = []
+        heading = self.heading
+        min_range = 0.16
+        done = 0
+
+        for i in range(len(scan.ranges)):
+            if scan.ranges[i] == float('Inf'):
+                scan_range.append(3.5)
+            elif np.isnan(scan.ranges[i]):
+                scan_range.append(0)
+            else:
+                scan_range.append(scan.ranges[i])
+	    #print(scan_range[i])
+
+
+        if min_range > min(scan_range) > 0:
+            done = 1
+
+        for pa in past_action:
+            scan_range.append(pa)
+
+        current_distance = round(math.hypot(self.goal_x - self.position.x, self.goal_y - self.position.y),2)
+        if current_distance < 0.2:
+            self.get_goalbox = True
+        #print("Heading = " + str(heading))
+
+        goal_pos.append(self.goal_x)
+        goal_pos.append(self.goal_y)
+
+        robot_pos.append(self.position.x)
+        robot_pos.append(self.position.y)
+
+        return scan_range, heading, current_distance, robot_pos, goal_pos, done
 
     # check scan_range size and see if adding x y position of agent into the state would change things
     def getStateDQN(self, scan):
@@ -424,6 +467,9 @@ class Env():
 
 
         state, done = self.getState(data, past_action)
+
+        scan_range, heading, current_distance, robot_pos, goal_pos, done = self.getState_storeExpertData(data, past_action)
+
         reward = self.setReward(state, done)
 
 
@@ -436,7 +482,8 @@ class Env():
         # print("state: " + str(state))
         # print("state as array: " + str(np.asarray(state)))
 
-        return np.asarray(state), reward, done, goal
+        # return np.asarray(state), reward, done, goal
+        return np.asarray(state), reward, done, goal, scan_range, heading, current_distance, robot_pos, goal_pos
 
 
     def stepDQN(self, action):
@@ -550,6 +597,23 @@ class Env():
         logfile.write(json.dumps(log) + "\n")
         logfile.close
 
+
+    def logExpertData(self, scan_range, heading, current_distance, robot_pos, goal_pos):
+        self.ep_number = self.ep_number + 1
+        log = {
+            "ep_number": self.ep_number,
+            "scan_range": scan_range,
+            "heading": heading,
+            "current_distance": current_distance,
+            "robot x pos": robot_pos[0],
+            "robot y pos": robot_pos[1],
+            "goal x pos": goal_pos[0],
+            "goal y pos": goal_pos[1]
+        }
+        logfile = open(self.log_ExpertDataFile, "a")
+        logfile.write(json.dumps(log) + "\n")
+        logfile.close
+
         # Display data live and save them to csv files
     def DispEpisodeCSV(self, reward, collision_count, goal_count, step_count, GoalRates, num_goals):
         self.ep_number = self.ep_number + 1
@@ -572,6 +636,34 @@ class Env():
 
 
 
+    def DispEpisodeCSVExpertData(self, scan_range, heading, current_distance, robot_pos, goal_pos, ep):
+        self.ep_number = self.ep_number + 1
+        log = {
+            "ep_number": self.ep_number,
+            "scan_range": scan_range,
+            "heading": heading,
+            "current_distance": current_distance,
+            "robot x pos": robot_pos[0],
+            "robot y pos": robot_pos[1],
+            "goal x pos": goal_pos[0],
+            "goal y pos": goal_pos[1]
+        }
+
+        # if len(GoalRates) == 0:
+        #     self.result.data = [reward, self.respawn_goal.currentModuleIndex(), self.current_time, float("%.4f" % 0), num_goals]
+        # else:
+        #     self.result.data = [reward, self.respawn_goal.currentModuleIndex(), self.current_time, float("%.4f" % GoalRates[-1]), num_goals]
+
+        # self.result_ExpertData.data = [scan_range, heading, current_distance, robot_pos[0], robot_pos[1], goal_pos[0], goal_pos[1]]
+        self.result_ExpertData.data = scan_range + [heading, current_distance, robot_pos[0], robot_pos[1], goal_pos[0], goal_pos[1], ep]
+
+        print(self.result_ExpertData.data)
+
+
+        self.pub_result_ExpertData.publish(self.result_ExpertData)
+
+
+
 
     def createLog(self):
 
@@ -582,6 +674,30 @@ class Env():
         self.current_time = int(time.time())
 
         self.log_file = logpath + "/" + self.agent_type + "-" + str(self.current_time) + ".txt"
+
+
+        try:
+            os.makedirs(logpath)
+        except:
+            pass
+
+        logfile = open(self.log_file, "a")
+        logfile.close
+
+
+    def createExpertLog(self):
+
+        # dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/env/{}ing_logs/{}/env-{}'.format(sys.argv[1], self.agent_type, self.env_module_id)
+
+        # dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym/src/env/{}ing_logs/{}/'.format(sys.argv[1], self.agent_type)
+
+        dirPath = '/home/wen-chung/catkin_noetic_ws/src/Autonav-RL-Gym-Real/src/env/{}ing_logs/{}/'.format(sys.argv[1], self.agent_type)
+
+        logpath = os.path.dirname(os.path.realpath(__file__)) + dirPath
+
+        self.current_time = int(time.time())
+
+        self.log_ExpertDataFile = logpath + "/" + self.agent_type + "-" + str(self.current_time) + "-ExpertData" + ".txt"
 
 
         try:
