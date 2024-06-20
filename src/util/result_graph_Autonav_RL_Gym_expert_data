@@ -112,11 +112,18 @@ class Window(QMainWindow):
 
     def data(self, data):
 
+        print('data coming!!!!!!!!')
+
         incoming_LiDAR = []
 
         if (sys.argv[1] == "train"):
 
+            print('Training !!!!!!!!!!!!!')
+
             if sys.argv[3] == "real":
+
+                print(' reall !!!!!!!!!!!!')
+
                 for i in range(360):
                     incoming_LiDAR.append(data.data[i])
 
@@ -130,8 +137,14 @@ class Window(QMainWindow):
                 self.robot_pos_ys.append(data.data[369])
                 self.goal_pos_xs.append(data.data[370])
                 self.goal_pos_ys.append(data.data[371])
+                self.episodes.append(data.data[372])
 
             else:
+
+                print('sim !!!!!!!!!!!!')
+
+                print(len(data.data))
+
                 for i in range(360):
                     incoming_LiDAR.append(data.data[i])
 
@@ -139,15 +152,20 @@ class Window(QMainWindow):
 
                 self.ep.append(self.size_ep + self.count)
                 self.count += 1
-                self.env_indices.append(data.data[366])
-                self.headings.append(data.data[367])
-                self.current_distances.append(data.data[368])
-                self.robot_pos_xs.append(data.data[369])
-                self.robot_pos_ys.append(data.data[370])
-                self.goal_pos_xs.append(data.data[371])
-                self.goal_pos_ys.append(data.data[372])
+                self.env_indices.append(data.data[361])
+                self.headings.append(data.data[362])
+                self.current_distances.append(data.data[363])
+                self.robot_pos_xs.append(data.data[364])
+                self.robot_pos_ys.append(data.data[365])
+                self.goal_pos_xs.append(data.data[366])
+                self.goal_pos_ys.append(data.data[367])
+
+                self.episodes.append(data.data[368] + 1)
 
         else:
+
+            print('testing !!!!!!!!!!!')
+
             for i in range(360):
                 incoming_LiDAR.append(data.data[i])
 
@@ -297,6 +315,8 @@ class Window(QMainWindow):
             write.writerow(row)
 
             for i in range(len(fields)):
+
+                # print(self.episodes)
                 row = []
                 row.append(fields[i])
                 row.append(self.episodes[i])
